@@ -1,21 +1,15 @@
 <?php
 
-$signup = new Signup();
-
-$signup->signup();
-
-
 require('temp/header.php');
-?>
 
+?>
 
 
 
 <h3> register form</h3>
-<?php $signup->displayerrors(); 
+<?php echo $signup->displayerrors(); 
 ?>
-<div>
-  <form action="" method="post">
+  <form action="/signup" method="post">
     <label for="phuname">User Name</label>
     <input type="text" id="phuname" name="username" placeholder="Your username..">
 
@@ -27,7 +21,6 @@ require('temp/header.php');
   
     <input type="submit" value="signup" name="signup">
   </form>
-</div>
 
 </body>
 </html>
