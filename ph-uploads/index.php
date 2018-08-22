@@ -1,0 +1,3 @@
+<?php
+
+// Sat Shri Akal
