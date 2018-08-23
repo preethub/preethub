@@ -6,4 +6,4 @@ official website http://preethub.com
 
 Installation is very simple
 
-put files on server then run ph-install.php file
+put files on server and run ph-install.php file
