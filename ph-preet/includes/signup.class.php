@@ -30,9 +30,9 @@ public 	$errors = array();
 			
 			$this->password = $db->escape($_POST['password']);
 			
-			$sql1 = "SELECT * FROM ". PH_PRIFIX ."users Where username='$this->username'";
+			$sql1 = "SELECT * FROM ". PH_PREFIX ."users Where username='$this->username'";
 			
-			$sql2 = "SELECT * FROM ". PH_PRIFIX ."users Where email='$this->email'";
+			$sql2 = "SELECT * FROM ". PH_PREFIX ."users Where email='$this->email'";
 			
 			$result1 = $db->query($sql1);
  $count1 = mysqli_num_rows($result1);
@@ -61,7 +61,7 @@ if($count1 == 1){
 	$this->errors = "empty password";
 }elseif(!empty($this->username) || !empty($this->password) || !empty($this->email)){
 	
-	$sql2 = "INSERT INTO ". PH_PRIFIX ."users (username, email, password) VALUES ('$this->username', '$this->email', '$this->password')";
+	$sql2 = "INSERT INTO ". PH_PREFIX ."users (username, email, password) VALUES ('$this->username', '$this->email', '$this->password')";
 
 	
 if($db->query($sql2) === false){
