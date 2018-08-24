@@ -12,7 +12,7 @@ Class index{
 		
 $start_from = ($page - 1) * $limit;
 		
-		$query1 = "SELECT * FROM ". PH_PRIFIX ."posts LIMIT $start_from, $limit";
+		$query1 = "SELECT * FROM ". PH_PREFIX ."posts LIMIT $start_from, $limit";
 		
 		if($db->count($query1) > 0){
 	
