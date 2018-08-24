@@ -18,7 +18,7 @@ require('system/loader.php');
 require ABSPATH .'/ph-config.php';
 
 // db connection
-$db = new db($db_host,$db_user,$db_pass,$db_name);
+$db = new db(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 
 require('system/settings.php');
 
