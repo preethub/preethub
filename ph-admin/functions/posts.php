@@ -1,13 +1,13 @@
 <?php
 
 
-$posts = $db->select("SELECT * FROM ". PH_PRIFIX ."posts");
+$posts = $db->select("SELECT * FROM ". PH_PREFIX ."posts");
 
 if(isset($_GET['delete'])){
 	
 	$id = $_GET['delete'];
 	
-	$delete = "DELETE FROM ". PH_PRIFIX ."posts WHERE id='$id'";
+	$delete = "DELETE FROM ". PH_PREFIX ."posts WHERE id='$id'";
 	
 	if($db->query($delete) === TRUE){
 		
@@ -49,7 +49,7 @@ if(isset($_POST['addpost'])){
  $target = $target_dir . basename($_FILES["pimage"]["name"]);
 	
 	
-	$query = "INSERT INTO ". PH_PRIFIX ."posts(name, user_id, content, image) VALUES ('$pname', '$user->id', '$pcontent', '$pimage')";
+	$query = "INSERT INTO ". PH_PREFIX ."posts(name, user_id, content, image) VALUES ('$pname', '$user->id', '$pcontent', '$pimage')";
 	
 	if($db->query($query) === TRUE){
 		
