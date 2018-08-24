@@ -17,7 +17,7 @@ Class Post{
 			header('location: index.php');
 		}
 		
-		$query = "SELECT * FROM ". PH_PRIFIX ."posts Where id='$postid'";
+		$query = "SELECT * FROM ". PH_PREFIX ."posts Where id='$postid'";
 		
 		$posts = $db->select($query);
 		
