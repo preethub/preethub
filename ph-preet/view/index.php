@@ -5,7 +5,7 @@
    
         <?php foreach ($posts as $post): ?>
          <div class="card">
-      <h2><a href="/post/<?php echo $post->id; ?>"><?php echo $post->name; ?></a></h2>
+      <h2><a href="<?php echo $site_url; ?>/post/<?php echo $post->id; ?>"><?php echo $post->name; ?></a></h2>
       <h5>Published - <?php echo $post->created_at; ?></h5> 
     <?php if(!empty($post->image)){ ?>
     <img src="<?php echo $site_url . '/ph-uploads/' . $post->image; ?>" style="width:350px;height:300px;">
@@ -31,10 +31,10 @@
     <input type="submit" value="Login" name="login">
   </form> 
   <?php }else{?>
-<h5> - <a href="/logout">Logout</a> <h5>
+<h5> - <a href="<?php echo $site_url; ?>/logout">Logout</a> <h5>
   <?php $user = $login->userdata();
   if($user->role === Admin){ ?>  	
- - <a href="/ph-admin">Admin Panel</a>
+ - <a href="<?php echo $site_url; ?>/ph-admin">Admin Panel</a>
   <?php } 
    } ?>
 </div>
