@@ -1,6 +1,6 @@
 <?php 
 
-$total_users = $db->count("SELECT `id` FROM `". PH_PRIFIX ."users`");
+$total_users = $db->count("SELECT `id` FROM `". PH_PREFIX ."users`");
 
-$total_posts = $db->count("SELECT `id` FROM `". PH_PRIFIX ."posts`");
+$total_posts = $db->count("SELECT `id` FROM `". PH_PREFIX ."posts`");
 
