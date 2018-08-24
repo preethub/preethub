@@ -9,10 +9,6 @@ if ( !defined('ROOTPATH') )
 	define('ABSPATH', dirname(dirname(__FILE__)) . '/');
 
 
-//ph variable 
-//	$ph = new stdClass();
-
-
 require('system/loader.php');
 
 require ABSPATH .'/ph-config.php';
@@ -27,6 +23,5 @@ require('system/url.php');
 require('system/assign.php');
 
 require('system/pagination.php');
-
 
 require('system/getfile.php');
