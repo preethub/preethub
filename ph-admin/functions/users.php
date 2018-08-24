@@ -1,6 +1,6 @@
 <?php 
 
-$users_data = $db->query("SELECT * FROM `". PH_PRIFIX ."users`");   
+$users_data = $db->query("SELECT * FROM `". PH_PREFIX ."users`");   
 
 if(isset($_POST['add_user'])){
 
@@ -12,7 +12,7 @@ $email = $db->escape($_POST['email']);
 
 // attempt insert query execution
 
-$sql = "INSERT INTO ". PH_PRIFIX ."users (role, email, username, password) VALUES ('Author', '$email', '$username', '$password')";
+$sql = "INSERT INTO ". PH_PREFIX ."users (role, email, username, password) VALUES ('Author', '$email', '$username', '$password')";
 
 if($db->query($sql) === TRUE){
 
