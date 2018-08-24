@@ -24,7 +24,7 @@ $index = new index;
 
 $posts = $index->getposts($_url[1], $posts_per_page);
 
-$totalpost = $db->count("SELECT `id` FROM `". PH_PRIFIX ."posts`");
+$totalpost = $db->count("SELECT `id` FROM `". PH_PREFIX ."posts`");
 	
 $currentpage = !empty($_url['1']) && ctype_digit($_url['1']) ? $_url[1] : 1;  
 
