@@ -40,7 +40,7 @@ $this->user = $db->escape($_POST['username']);
 $myusername = $db->escape($_POST['username']);
  
 $mypassword = $db->escape($_POST['password']); 
-$sql = "SELECT * FROM ". PH_PRIFIX ."users WHERE username = '$myusername' and password = '$mypassword'"; 
+$sql = "SELECT * FROM ". PH_PREFIX ."users WHERE username = '$myusername' and password = '$mypassword'"; 
 $result = $db->query($sql); 
 $row = mysqli_fetch_array($result,MYSQLI_ASSOC); 
 $count = mysqli_num_rows($result); 
@@ -80,7 +80,7 @@ function userdata(){
 	
 	$user = $_SESSION['username'];
 	
-	$sql1 = "SELECT * FROM ". PH_PRIFIX ."users WHERE username='$user'"; 
+	$sql1 = "SELECT * FROM ". PH_PREFIX ."users WHERE username='$user'"; 
 	
 	$userdata = $db->get_row($sql1);
 	
