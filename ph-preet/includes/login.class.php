@@ -50,7 +50,7 @@ $count = mysqli_num_rows($result);
 if($count == 1) { 
  session_start();
  $_SESSION['username'] = $myusername; 
-header("location: /ph-admin"); 
+header("location: $site_url"); 
 	} // Else
 	else {
 $this->error = "Your Login Name or Password is invalid"; 
