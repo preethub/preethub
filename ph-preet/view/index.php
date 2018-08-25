@@ -21,6 +21,7 @@
     <div class="card">
   <?php  if(empty($_SESSION['username'])){ ?>
       <h3>Login</h3>
+       <h5> <?php echo $login->displayerrors(); ?></h5>
   <form action="" method="post">
     <label for="fname">User Name</label>
     <input type="text" id="fname" name="username" placeholder="Your name..">
@@ -33,7 +34,7 @@
   <?php }else{?>
 <h5> - <a href="<?php echo $site_url; ?>/logout">Logout</a> <h5>
   <?php $user = $login->userdata();
-  if($user->role === Admin){ ?>  	
+  if($user->role === 'Admin'){ ?>  	
  - <a href="<?php echo $site_url; ?>/ph-admin">Admin Panel</a>
   <?php } 
    } ?>
