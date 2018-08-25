@@ -72,7 +72,7 @@ $db = new db(DB_HOST,DB_USER,DB_PASS,DB_NAME);
   PRIMARY KEY (`id`), 
   KEY `user_id` (`user_id`) 
   )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"))	$error = 1;
- if(!$db->query("INSERT INTO `".$_POST['prefix']."posts` (`id`, `user_id`, `name`, `content`) VALUES ('1', '1', 'Sat Shri Akal', '<b>Sat Sri Akal </b> (Gurumukhi ਸਤ ਸ਼੍ਰੀ ਅਕਾਲ) is a Jaikara (lit. Call of Victory) now used, often, as a greeting by the followers of the Sikh religion. It is the second half of the Sikh Clarion call, given by the Tenth guru, Guru Gobind Singh, \"Bole So Nihal, Sat Sri Akal\", one will be blessed eternally who says that God is the ultimate truth.');"))	$error = 1; 
+ if(!$db->query("INSERT INTO `".$_POST['prefix']."posts` (`id`, `user_id`, `name`, `content`) VALUES ('1', '1', 'Sat Shri Akal', '<b>Sat Sri Akal </b> is a Jaikara (lit. Call of Victory) now used, often, as a greeting by the followers of the Sikh religion. It is the second half of the Sikh Clarion call, given by the Tenth guru, Guru Gobind Singh, \"Bole So Nihal, Sat Sri Akal\", one will be blessed eternally who says that God is the ultimate truth.');"))	$error = 1; 
 if(!$db->query("CREATE TABLE IF NOT EXISTS `".$_POST['prefix']."users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(256) NOT NULL,
