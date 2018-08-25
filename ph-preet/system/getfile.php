@@ -3,44 +3,57 @@
 
 if($_url[0] == "signup"){
 	
-	
-	$signup = new Signup();
+$signup = new Signup();
 
 $signup->signup();
 
+$title = "Signup - $site_name";
+	
 }elseif($_url[0] == "login"){
 	
-	$login = new login;
+$login = new login;
 
 $login->login();
 
 if(!empty($_SESSION['username'])){
 	header("location: index.php");
 }
+
+$title = "Login - $site_name";
 	
 }elseif($_url[0] == "index"){
 	
+if(empty($_url[1])){
+
+$currentpage = '1';
+	
+}else{
+
+$currentpage = $_url[1];
+
+}
+	
 $index = new index;	
 
-$posts = $index->getposts($_url[1], $posts_per_page);
+$posts = $index->getposts($currentpage, $posts_per_page);
 
 $totalpost = $db->count("SELECT `id` FROM `". PH_PREFIX ."posts`");
 	
-$currentpage = !empty($_url['1']) && ctype_digit($_url['1']) ? $_url[1] : 1;  
-
-
-	$login = new login;
+$login = new login;
 
 $login->login();
+	
+$title = $site_name;
 	
 }elseif($_url[0] == "post"){
 	
-	$post = new post;
+$posts = new post;
 	
-	$posts = $post->getpost($_url[1]);
+$post = $posts->getpost($_url[1]);
 	
-		$login = new login;
+$login = new login;
 
 $login->login();
 	
+$title = "$post->name - $site_name";
 }
