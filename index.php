@@ -4,10 +4,12 @@
 // preethub
 //version 0.1
 
-// Load file
-require ('ph-load.php');
+// Index file
 
 session_start();
+
+require ('ph-load.php');
+
 require view($_url[0]);
 
 
