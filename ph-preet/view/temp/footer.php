@@ -1,4 +1,5 @@
-<div class="footer"><h2>&copy; <?php echo $site_name; ?></h2>
+<div class="footer"><strong>&copy; <?php echo $site_name; ?></strong>
+- <?php echo PH_VERSION; ?>
 </div>
 </body>
 </html>
