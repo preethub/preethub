@@ -1,28 +1,33 @@
+
 <?php
+ $login = new login;
 
+if(is_logged()){
 
-if($_url[0] == "signup"){
+$user = $login->userdata();
+
+}
+
+if($_url[0] == "signup"){	
 	
-$signup = new Signup();
+$signup = new signup;
 
 $signup->signup();
 
 $title = "Signup - $site_name";
-	
-}elseif($_url[0] == "login"){
-	
-$login = new login;
 
-$login->login();
+}elseif($_url[0] == "login"){
 
 if(!empty($_SESSION['username'])){
-	header("location: index.php");
+header("location: $site_url");
 }
 
 $title = "Login - $site_name";
 	
 }elseif($_url[0] == "index"){
 	
+$index = new index;	
+
 if(empty($_url[1])){
 
 $currentpage = '1';
@@ -32,28 +37,29 @@ $currentpage = '1';
 $currentpage = $_url[1];
 
 }
-	
-$index = new index;	
 
 $posts = $index->getposts($currentpage, $posts_per_page);
 
 $totalpost = $db->count("SELECT `id` FROM `". PH_PREFIX ."posts`");
 	
-$login = new login;
 
-$login->login();
-	
-$title = $site_name;
+$title = "$site_name";
 	
 }elseif($_url[0] == "post"){
 	
 $posts = new post;
 	
 $post = $posts->getpost($_url[1]);
-	
-$login = new login;
 
-$login->login();
-	
+$comment = new comment($_url[1],$db);
+
+$comments = $comment->getcomments();
+
+if(!empty($_SESSION['username'])){
+
+$comment->add_comment($user->id);
+
+}
 $title = "$post->name - $site_name";
+	
 }
