@@ -13,15 +13,25 @@
     </div>
     <?php endforeach ?>
  <div class="card">
-<?php echo pagination($site_url, $totalpost, $posts_per_page, $currentpage); 
+<?php echo pagination($site_url, $totalpost, $posts_per_page, $currentpage,'card'); 
 ?>
    </div>
-   </div>
-  <div class="rightcolumn">
-    <div class="card">
-  <?php  if(empty($_SESSION['username'])){ ?>
-      <h3>Login</h3>
-       <h5> <?php echo $login->displayerrors(); ?></h5>
+  <div class="rightcolumn">   
+  <?php  if(is_logged()){ ?>
+  
+     <div class="heading">Links</div>
+  <div class="card">
+<h4> - <a href="<?php echo $site_url; ?>/logout">Logout</a> </h4>
+  <?php $user = $login->userdata();
+  if($user->role === "Admin"){ ?>  	
+ <a href="<?php echo $site_url; ?>/ph-admin"><h4> - Admin Panel</h4></a>
+  <?php } ?> 
+  </div> 
+<?php  }else{ ?> 
+  <div class="heading">Login</div>
+    <div class="card">    
+ <h5> <?php echo $login->displayerrors(); ?></h5>
+      
   <form action="" method="post">
     <label for="fname">User Name</label>
     <input type="text" id="fname" name="username" placeholder="Your name..">
@@ -31,15 +41,8 @@
   
     <input type="submit" value="Login" name="login">
   </form> 
-  <?php }else{?>
-<h5> - <a href="<?php echo $site_url; ?>/logout">Logout</a> <h5>
-  <?php $user = $login->userdata();
-  if($user->role === 'Admin'){ ?>  	
- - <a href="<?php echo $site_url; ?>/ph-admin">Admin Panel</a>
-  <?php } 
-   } ?>
-</div>
-    </div>
+  </div>
+  <?php } ?>
   </div>
 </div>
 
