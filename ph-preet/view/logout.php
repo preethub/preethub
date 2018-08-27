@@ -1,4 +1,4 @@
 <?php  
 if(session_destroy()) { 
-header("Location: index.php"); 
+header("Location: $site_url"); 
 }
