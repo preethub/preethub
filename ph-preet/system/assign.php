@@ -1,5 +1,30 @@
 <?php
 
+
+function addcss($css){
+	
+ global $site_url;	
+ 
+ echo '<link rel="stylesheet" type="text/css" href="';
+	
+echo $site_url . '/ph-preet/view/style/css/' .$css .'">';		
+
+}
+
+
+function is_logged(){
+
+if(!empty($_SESSION['username'])){
+
+ return TRUE;
+ }else{
+ return FALSE;
+ }
+ }
+
+
+
+
 $_url = get('url');
 
 $url2 = get('url');
