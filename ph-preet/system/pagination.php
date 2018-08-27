@@ -8,7 +8,7 @@
  * @param $currentPage int
  * @param $queryStringArray array
  */
-function pagination($baseUrl, $totalResults, $resultsPerPage, $currentPage, $queryStringArray=[]) {
+function pagination($baseUrl, $totalResults, $resultsPerPage, $currentPage, $class, $queryStringArray=[]) {
     //total pages to show
     $totalPages = ceil($totalResults/$resultsPerPage);
     
@@ -27,6 +27,7 @@ function pagination($baseUrl, $totalResults, $resultsPerPage, $currentPage, $que
     ob_start();
     
     ?>
+  <div class="'. $class .'">
     <ul class="pagination">
         <?php
         //if page number 1 is not shown then show the "First page" link
@@ -112,6 +113,7 @@ function pagination($baseUrl, $totalResults, $resultsPerPage, $currentPage, $que
         }
     ?>
     </ul>
+      </div>
     <?php
     $output = ob_get_contents();
     ob_end_clean();
