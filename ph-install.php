@@ -29,7 +29,7 @@ $fp = fopen('ph-config.php','w');
 $content = '
 <?php
 // PreetHub
-// Version 0.1
+// Version 0.2
 
 /* MySQL database hostname */ 
 define("DB_HOST","'.$_POST['host'].'");
@@ -92,6 +92,15 @@ if(!$db->query("CREATE TABLE IF NOT EXISTS `".$_POST['prefix']."config` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"))	$error = 1;
  if(!$db->query("INSERT INTO `".$_POST['prefix']."config` (`id`, `name`, `value`) VALUES
 ('1', 'site_url', '".$_POST['site_url']."'), ('2', 'site_name', '".$_POST['site_name']."'), ('3', 'site_description', '".$_POST['site_desc']."'), ('4', 'site_admin', '".$_POST['site_admin']."'), ('5', 'posts_per_page', '".$_POST['posts_per_page']."');"))	$error = 1; 
+ if(!$db->query("CREATE TABLE IF NOT EXISTS `".$_POST['prefix']."comments` (
+  `comment_id` int(11) NOT NULL AUTO_INCREMENT, 
+  `comment_user_id` int(11) NOT NULL, 
+  `comment_post_id` int(11) NOT NULL, 
+  `comment_content` longtext NOT NULL,  
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(), 
+  PRIMARY KEY (`comment_id`), 
+  )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"))	$error = 1;
+	
 if($error){
 echo "ERROR: Could not able to execute $sql. ". mysqli_error($db->link);
 }else {
