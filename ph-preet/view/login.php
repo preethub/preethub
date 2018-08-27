@@ -1,16 +1,9 @@
-<?php
 
-if(!empty($_SESSION['username'])){
-	header("location: index.php");
-}
-
-require 'temp/header.php';
-?>
-
-<h3>Using CSS to style an HTML Form</h3>
+ <?php require 'temp/header.php'; ?>
+ <div class="card">
+<h3>Login</h3>
 <?php echo $login->displayerrors(); 
 ?>
-<div>
   <form action="" method="post">
     <label for="fname">User Name</label>
     <input type="text" id="fname" name="username" placeholder="Your name..">
@@ -21,6 +14,6 @@ require 'temp/header.php';
     <input type="submit" value="Login" name="login">
   </form>
 </div>
-
+<?php require 'temp/footer.php';  ?>
 </body>
 </html>
