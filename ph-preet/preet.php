@@ -1,5 +1,8 @@
 <?php
 
+//PreetHub Version
+$ph_version = "0.2";
+
 // define ROOTPATH
 if ( !defined('ROOTPATH') )
 define('ROOTPATH', dirname(__FILE__) . '/');
