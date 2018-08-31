@@ -6,7 +6,7 @@
 /* Add a gray background color with some padding */
 body {
     font-family: Arial;
-    background: #BDBDBD;    
+    background: #E5E4E2;    
     padding: 0;
     margin: 0;
 }
@@ -43,7 +43,7 @@ a {
 .rightcolumn {
     float: left;
     width: 25%;
-    padding-left: 20px;
+    padding-left: 5px;
 }
 
 /* Fake image */
@@ -109,7 +109,7 @@ input[type=text], select {
 }
 
 input[type=submit] {
-    width: 60%;
+    width: 40%;
     background-color: #4CAF50;
     color: white;
     padding: 10px 15px;
@@ -152,7 +152,7 @@ color: #FFFFFF;
 
 .imge{ 
       float: left;
-      width:20%; 
+      width:8%; 
       }
 
 
