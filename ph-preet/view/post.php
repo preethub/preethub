@@ -11,9 +11,7 @@
 <?php if(!empty($post->image)){ ?>
   <img src="<?php echo $site_url . '/ph-uploads/' . $post->image; ?>" style="width:350px;height:300px;">
     <?php } echo $post->content; ?>  </div>
-  </div>
-  <div class="rightcolumn">
-  <div class="heading">Comments</div>
+    <div class="heading">Comments</div>
  <?php  if($comment->have_comments()){ 
    foreach ($comments as $comment): ?>  
      <div class="card">
@@ -38,6 +36,30 @@
     You must <a href="<?php echo $site_url; ?>/login"><b>login</b></a> or <a href="<?php echo $site_url; ?>/signup"><b>signup</b></a> for post a comment.
   <?php } ?>
   </div>  
+  </div>
+  <div class="rightcolumn">
+  <?php  if(is_logged()){ ?>  
+    <div class="heading">Links</div>
+  <div class="card">
+<h4> - <a href="<?php echo $site_url; ?>/logout">Logout</a> </h4>
+  <?php   if($user->role === "Admin"){ ?>  	
+ <a href="<?php echo $site_url; ?>/ph-admin"><h4> - Admin Panel</h4></a>
+ </div>
+  <?php } ?>  
+<?php  }else{ ?> 
+  <div class="heading">Login</div>
+   <div class="card">    
+ <h5> <?php echo $ph_class->displayerrors(); ?></h5>   
+  <form action="" method="post">
+    <label for="fname">User Name</label>
+    <input type="text" id="fname" name="username" placeholder="Your name..">
+    <label for="lname">Password</label>
+    <input type="text" id="lname" name="password" placeholder="Your last name..">
+    <input type="submit" value="Login" name="login">
+  </form> 
+  </div>
+  <?php } ?>
+  </div>
   </div>
 </div>
 <?php require('temp/footer.php'); ?>
