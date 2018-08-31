@@ -1,8 +1,6 @@
 <?php require('temp/header.php'); ?>
-
 <div class="row">
-  <div class="leftcolumn">
-   
+  <div class="leftcolumn"> 
         <?php foreach ($posts as $post): ?>
          <div class="card">
       <h2><a href="<?php echo $site_url; ?>/post/<?php echo $post->id; ?>"><?php echo $post->name; ?></a></h2>
@@ -13,7 +11,7 @@
     </div>
     <?php endforeach ?>
  <div class="card">
-<?php echo pagination($site_url, $totalpost, $posts_per_page, $currentpage,'card'); 
+<?php echo pagination($site_url, $totalpost, $posts_per_page, $currentpage); 
 ?>
    </div>
   <div class="rightcolumn">   
@@ -22,7 +20,7 @@
      <div class="heading">Links</div>
   <div class="card">
 <h4> - <a href="<?php echo $site_url; ?>/logout">Logout</a> </h4>
-  <?php $user = $login->userdata();
+  <?php $user = $ph_class->userdata();
   if($user->role === "Admin"){ ?>  	
  <a href="<?php echo $site_url; ?>/ph-admin"><h4> - Admin Panel</h4></a>
   <?php } ?> 
@@ -30,7 +28,7 @@
 <?php  }else{ ?> 
   <div class="heading">Login</div>
     <div class="card">    
- <h5> <?php echo $login->displayerrors(); ?></h5>
+ <h5> <?php echo $ph_class->displayerrors(); ?></h5>
       
   <form action="" method="post">
     <label for="fname">User Name</label>
