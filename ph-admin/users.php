@@ -1,49 +1,28 @@
 <?php 
-require( 'inc.php');
-require( 'functions/users.php');  
-require('includes/header.php');
-?>
-    <main class="app-content">
-      <div class="app-title">
-        <div>
-          <h1><i class="fa fa-file-text-o"></i> Users</h1>
-        </div>
-        <ul class="app-breadcrumb breadcrumb">
-          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-          <li class="breadcrumb-item"><a href="#">Users</a></li>
-        </ul>
-      </div>
-      <div class="row">
-       <div class="col-md-12">
-          <div class="tile">
-            <section class="invoice">
-             <div class="row mb-4">
-                <div class="col-12 table-responsive">
-                  <table class="table table-striped">
+require('admin-core.php');
+require('admin-header.php');
+?>    
+    <div class="heading">All Users</div>   
+    <div class="card">
+   <?php echo get_messages(); ?>
+    <table>
                     <thead>
-                      <tr>                        <th>Id</th>                        <th>Name</th>                        <th>Role </th>                        <th>Action</tr>
+                      <tr>        
+                      <th>Id</th>        
+                      <th>Name</th>   
+                      <th>Role </th>       
+                      <th>Action</tr>
                       </tr>
                     </thead>
                     <tbody>
-  <?php                   if(mysqli_num_rows($users_data) > 0)
- while($res = mysqli_fetch_object($users_data)){
-?><tr>
-<td><?php echo $res->id ?></td>  
-                        <td> <?php echo $res->username ?></td>        
-                 <td> <?php	                echo $res->role;                ?>
-               </td> <?php }?> 
-               </tr>                                                              
+   <?php foreach ($udatas as $udata): ?><tr>
+<td><?php echo $udata->id ?></td>  
+<td> <?php echo $udata->username ?></td>        
+                   <td> <?php	echo $udata->role;   ?>
+               </td> <td> <?php if(get_config('site_admin') ===  $udata->username){ ?> <div class="redtext">Super Administrator</div> <?php }else{ ?> <a href="?deleteuser=<?php echo $udata->id; ?>" onclick= "if(! confirm('Are you sure?')){return false;}"><b>Delete</a></b> <?php } ?></td>
+               </tr>    
+            <?php endforeach ?>                                                              
                  </tbody>
                   </table>
-                </div>
-              </div>   
-              </div>
-            </section>
-          </div>
-        </div>
-      </div>
-    </main>
-<?php require_once('includes/footer.php');
-
-?>                 
-                    
+                </div>                       
+<?php require('admin-footer.php'); ?>
