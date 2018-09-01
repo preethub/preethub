@@ -20,8 +20,7 @@
      <div class="heading">Links</div>
   <div class="card">
 <h4> - <a href="<?php echo $site_url; ?>/logout">Logout</a> </h4>
-  <?php $user = $ph_class->userdata();
-  if($user->role === "Admin"){ ?>  	
+  <?php  if($loggeduser->role === "Admin"){ ?>  	
  <a href="<?php echo $site_url; ?>/ph-admin"><h4> - Admin Panel</h4></a>
   <?php } ?> 
   </div> 
