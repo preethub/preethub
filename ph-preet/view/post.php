@@ -29,7 +29,7 @@
   <?php  if(is_logged()){     ?>            
   <form action="" method="post">
 <b>Comment</b><br/><br>   
-            <textarea name="comment" rows="4" placeholder="comment"></textarea>
+   <textarea name="comment" rows="4" placeholder="comment"></textarea>
     <input type="submit" value="Comment" name="addcomment">
   </form> 
    <?php }else{ ?>
@@ -42,7 +42,7 @@
     <div class="heading">Links</div>
   <div class="card">
 <h4> - <a href="<?php echo $site_url; ?>/logout">Logout</a> </h4>
-  <?php   if($user->role === "Admin"){ ?>  	
+  <?php   if($loggeduser->role === "Admin"){ ?>  	
  <a href="<?php echo $site_url; ?>/ph-admin"><h4> - Admin Panel</h4></a>
  </div>
   <?php } ?>  
