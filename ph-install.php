@@ -29,7 +29,7 @@ $fp = fopen('ph-config.php','w');
 $content = '
 <?php
 // PreetHub
-// Version 0.1
+// Version 0.2
 
 /* MySQL database hostname */ 
 define("DB_HOST","'.$_POST['host'].'");
@@ -54,10 +54,15 @@ fclose($fp);
 
 include "ph-config.php";
 
-include "ph-preet/includes/db.class.php";
+include "ph-preet/classes.php";
 
 $db = new db(DB_HOST,DB_USER,DB_PASS,DB_NAME);
-
+	
+$options = array(
+    'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
+    'cost' => 12,
+  );
+  $password_hash = password_hash($_POST['site_pass'], PASSWORD_BCRYPT, $options);
 
  if(!$db->query("CREATE TABLE IF NOT EXISTS `".$_POST['prefix']."posts` (
   `id` int(11) NOT NULL AUTO_INCREMENT, 
@@ -83,7 +88,7 @@ if(!$db->query("CREATE TABLE IF NOT EXISTS `".$_POST['prefix']."users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;"))	$error = 1;
- if(!$db->query("INSERT INTO `".$_POST['prefix']."users` (`id`, `username`, `email`, `role`, `password`) VALUES ('1', '".$_POST['site_admin']."', '".$_POST['site_email']."', 'Admin', '".$_POST['site_pass']."');"))	$error = 1; 
+ if(!$db->query("INSERT INTO `".$_POST['prefix']."users` (`id`, `username`, `email`, `role`, `password`) VALUES ('1', '".$_POST['site_admin']."', '".$_POST['site_email']."', 'Admin', '".$password_hash."');"))	$error = 1; 
 if(!$db->query("CREATE TABLE IF NOT EXISTS `".$_POST['prefix']."config` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(256) NOT NULL,
@@ -92,6 +97,15 @@ if(!$db->query("CREATE TABLE IF NOT EXISTS `".$_POST['prefix']."config` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"))	$error = 1;
  if(!$db->query("INSERT INTO `".$_POST['prefix']."config` (`id`, `name`, `value`) VALUES
 ('1', 'site_url', '".$_POST['site_url']."'), ('2', 'site_name', '".$_POST['site_name']."'), ('3', 'site_description', '".$_POST['site_desc']."'), ('4', 'site_admin', '".$_POST['site_admin']."'), ('5', 'posts_per_page', '".$_POST['posts_per_page']."');"))	$error = 1; 
+ if(!$db->query("CREATE TABLE IF NOT EXISTS `".$_POST['prefix']."comments` (
+  `comment_id` int(11) NOT NULL AUTO_INCREMENT, 
+  `comment_user_id` int(11) NOT NULL, 
+  `comment_post_id` int(11) NOT NULL, 
+  `comment_content` longtext NOT NULL,  
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(), 
+  PRIMARY KEY (`comment_id`), 
+  )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"))	$error = 1;
+	
 if($error){
 echo "ERROR: Could not able to execute $sql. ". mysqli_error($db->link);
 }else {

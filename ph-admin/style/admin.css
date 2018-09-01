@@ -1,0 +1,181 @@
+*{
+	box-sizing: border-box;
+	
+}
+
+
+body{
+   
+   margin:0;
+   padding:0; 
+ }
+ 
+ header {
+  background: #19c589;
+  padding:10px;
+  font-size:30px; 
+ }
+ 
+ header a {
+ text-decoration: none;
+ color:white;
+ }
+ 
+ footer {
+  background: #19c589;
+  padding:5px;
+  font-size:20px; 
+  color:white
+ }
+ 
+ a {
+ color:#2E2E2E;
+ text-decoration: none;
+ }
+ 
+ .heading{
+ margin-top:10px;
+ font-weight: bold;
+ font-size: 20px;
+ border: 1px solid #ccc;
+ padding:10px;
+ }
+ 
+ .card{
+ padding: 8px 10px 10px 20px;
+ color:#444;
+ border-bottom: 2px solid #ccc;
+ }
+ 
+ .redtext {
+        color: red;
+}
+ 
+ .nav { width: 100%; overflow-x: hidden; }
+.nav ul { list-style: none; padding: 0px; margin: 0px; font-weight: bold; text-align: center; }
+.nav ul li { display: inline-block; }
+.nav ul li a { display: block; padding: 10px 20px; color: #444; border: 1px solid #ccc; }
+.nav ul li a:hover { background-color: #888; color: #fff; }
+
+@media (max-width:48.000em){
+/*	.example-header .container { width: 100%;} */
+  	.nav ul { width: 100%; font-weight: normal; }
+  	.nav ul li { width: 50%; float: left; }
+  /*	.nav ul li:nth-of-type(odd) a { border-right: 1px solid #ccc; }  */
+  	.nav ul li a { padding: 8px 0px; display: block; }
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+    background-color: #19c589;
+    color: white;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
+}
+
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    width: 60%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+.js .inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfile + label {
+    max-width: 80%;
+    font-size: 1.25rem;
+    /* 20px */
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    padding: 0.625rem 1.25rem;
+    /* 10px 20px */
+}
+
+.no-js .inputfile + label {
+    display: none;
+}
+
+.inputfile:focus + label,
+.inputfile.has-focus + label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
+.inputfile + label * {
+    /* pointer-events: none; */
+    /* in case of FastClick lib use */
+}
+
+.inputfile + label svg {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    fill: currentColor;
+    margin-top: -0.25em;
+    /* 4px */
+    margin-right: 0.25em;
+    /* 4px */
+}
+
+
+.inputfile-1 + label {
+    color: #f1e5e6;
+    background-color: #d3394c;
+}
+
+.inputfile-1:focus + label,
+.inputfile-1.has-focus + label,
+.inputfile-1 + label:hover {
+    background-color: #722040;
+}

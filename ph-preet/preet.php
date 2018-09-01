@@ -1,25 +1,25 @@
+
 <?php
 
-// define ROOTPATH
-if ( !defined('ROOTPATH') )
-define('ROOTPATH', dirname(__FILE__) . '/');
-	
-// define ABSPATH
-if ( !defined('ABSPATH') )
-define('ABSPATH', dirname(dirname(__FILE__)) . '/');
+/*  PreetHub Version. */
+$ph_version = "0.2";
 
-
-require('system/loader.php');
+require('classes.php');
 
 // db connection
 $db = new db(DB_HOST,DB_USER,DB_PASS,DB_NAME);
+	
+require('general-functions.php');
 
-require('system/settings.php');
+$_url = get('url');
+$_url = array_filter(explode('/', $_url));
 
-require('system/url.php');
+require('vars.php');
 
-require('system/assign.php');
+$ph_class = new ph_class($db);
 
-require('system/pagination.php');
+if(is_logged()){
 
-require('system/getfile.php');
+$loggeduser = $ph_class->loggeduser();
+
+}
