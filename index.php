@@ -1,16 +1,8 @@
 <?php
-
-
 // preethub
-//version 0.1
-
 // Index file
-
 session_start();
-
 require ('ph-load.php');
-
-require view($_url[0]);
-
-
+require('ph-preet/geturl.php');
+require get_url($_url[0]);
 ?>
