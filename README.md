@@ -1,11 +1,15 @@
 # Preethub Blog System
 
-A simple blog system
+Newborn php blog system from scratch
 
-Version 0.1 beta
+# Version  0.2 has been released 
 
-official website http://preethub.com
+official website  [Preethub.Com](http://preethub.com)
 
-Installation is very simple
+# Installation
 
 put files on server and run ph-install.php file
+
+# Ambition
+
+Make this blog system simple, useful, powerful, secure, popular and open source.
