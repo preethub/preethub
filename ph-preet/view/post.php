@@ -1,14 +1,15 @@
-<?php require('temp/header.php');  ?>
+<?php require('temp/header.php');
+ ?>
 <div class="row">
-  <div class="leftcolumn">      
+  <div class="leftcolumn">       
          <div class="card">
 <h2><?php echo $post->name ?></h2>
       <h5>Published - <?php echo $post->created_at ?></h5> 
 <?php if(!empty($post->image)){ ?>
-  <img src="<?php echo $site_url . '/ph-uploads/' . $post->image; ?>" style="width:350px;height:300px;">
+  <img src="<?php echo $site_url . '/ph-uploads/' . $post->image; ?>" style="width:1000px;height:100px;">
     <?php } echo $post->content; ?>  </div>
-    <div class="heading">Comments</div>
- <?php  if($comment->have_comments()){ 
+  <div class="heading">Comments</div>
+ <?php  if($ph_class->have_comments()){ 
    foreach ($comments as $comment): ?>  
      <div class="card">
  <?php  $cuser = $db->get_row("SELECT * FROM `". PH_PREFIX ."users` WHERE id='$comment->comment_user_id'"); ?>   
@@ -25,16 +26,16 @@
   <?php  if(is_logged()){     ?>            
   <form action="" method="post">
 <b>Comment</b><br/><br>   
-   <textarea name="comment" rows="4" placeholder="comment"></textarea>
+            <textarea name="comment" rows="4" placeholder="comment"></textarea>
     <input type="submit" value="Comment" name="addcomment">
   </form> 
    <?php }else{ ?>
     You must <a href="<?php echo $site_url; ?>/login"><b>login</b></a> or <a href="<?php echo $site_url; ?>/signup"><b>signup</b></a> for post a comment.
   <?php } ?>
   </div>  
-  </div>
+ </div>
   <div class="rightcolumn">
-  <?php  if(is_logged()){ ?>  
+    <?php  if(is_logged()){ ?>  
     <div class="heading">Links</div>
   <div class="card">
 <h4> - <a href="<?php echo $site_url; ?>/logout">Logout</a> </h4>
@@ -44,8 +45,8 @@
   <?php } ?>  
 <?php  }else{ ?> 
   <div class="heading">Login</div>
-   <div class="card">    
- <h5> <?php echo $ph_class->displayerrors(); ?></h5>   
+    <div class="card">    
+ <h5> <?php echo $ph_class->displayerrors(); ?></h5> 
   <form action="" method="post">
     <label for="fname">User Name</label>
     <input type="text" id="fname" name="username" placeholder="Your name..">
