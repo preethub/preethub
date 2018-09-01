@@ -1,10 +1,6 @@
-<?php require('temp/header.php');
-
- ?>
-
+<?php require('temp/header.php');  ?>
 <div class="row">
-  <div class="leftcolumn">
-        
+  <div class="leftcolumn">      
          <div class="card">
 <h2><?php echo $post->name ?></h2>
       <h5>Published - <?php echo $post->created_at ?></h5> 
