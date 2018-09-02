@@ -87,7 +87,7 @@ if(isset($_POST['addpost'])){
 		
 		move_uploaded_file($_FILES['pimage']['tmp_name'], $target);
 		
-	header('location: add_post.php');
+	header('location: add-post.php');
 	exit();	
 		
 	}else{
@@ -122,7 +122,7 @@ if($db->query($sql) === TRUE){
 
 add_message('User added successfully.');
 
-header('location: add_user.php');
+header('location: add-user.php');
 	exit();
 
 } else{
