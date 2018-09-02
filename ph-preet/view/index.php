@@ -5,7 +5,7 @@
          foreach ($posts as $post): ?>
          <div class="card">
       <h2><a href="<?php echo $site_url; ?>/post/<?php echo $post->id; ?>"><?php echo $post->name; ?></a></h2>
-      <h5>Published - <?php echo $post->created_at; ?></h5> 
+      <h5>Published - <?php echo date('j M Y g:i A', strtotime($post->created_at)); ?></h5> 
     <?php if(!empty($post->image)){ ?>
     <img src="<?php echo $site_url . '/ph-uploads/' . $post->image; ?>" style="width:350px;height:300px;">
     <?php } echo $post->content; ?>
