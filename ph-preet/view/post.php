@@ -4,7 +4,7 @@
   <div class="leftcolumn">       
          <div class="card">
 <h2><?php echo $post->name ?></h2>
-      <h5>Published - <?php echo $post->created_at ?></h5> 
+      <h5>Published - <?php echo date('j M Y g:i A', strtotime($post->created_at)) ?></h5> 
 <?php if(!empty($post->image)){ ?>
   <img src="<?php echo $site_url . '/ph-uploads/' . $post->image; ?>" style="width:1000px;height:100px;">
     <?php } echo $post->content; ?>  </div>
@@ -14,7 +14,7 @@
      <div class="card">
  <?php  $cuser = $db->get_row("SELECT * FROM `". PH_PREFIX ."users` WHERE id='$comment->comment_user_id'"); ?>   
   <div class="imge"><img src="<?php echo $site_url ?>/ph-preet/view/style/images/default-avatar.png"style="width:35px;height:30px;"></div>
-<b><?php  echo  $cuser->username; ?></b> <br><?php echo $comment->created_at; ?>  <br><br>
+<b><?php  echo  $cuser->username; ?></b> <br><?php echo date('j M Y g:i A', strtotime($comment->created_at)); ?>  <br><br>
        <?php echo $comment->comment_content; ?>  
       </div>
    <?php endforeach;   }else{  ?>     
