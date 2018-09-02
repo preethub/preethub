@@ -9,7 +9,7 @@ require('classes.php');
 // db connection
 $db = new db(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 	
-require('general-functions.php');
+require('general-functons.php');
 
 $_url = get('url');
 $_url = array_filter(explode('/', $_url));
