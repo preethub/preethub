@@ -19,7 +19,7 @@ require('admin-header.php');
 <td><?php echo $udata->id ?></td>  
 <td> <?php echo $udata->username ?></td>        
                    <td> <?php	echo $udata->role;   ?>
-               </td> <td> <?php if(get_config('site_admin') ===  $udata->username){ ?> <div class="redtext">Super Administrator</div> <?php }else{ ?> <a href="?deleteuser=<?php echo $udata->id; ?>" onclick= "if(! confirm('Are you sure?')){return false;}"><b>Delete</a></b> <?php } ?></td>
+               </td> <td> <?php if(site_info('site_admin') ===  $udata->username){ ?> <div class="redtext">Super Administrator</div> <?php }else{ ?> <a href="?deleteuser=<?php echo $udata->id; ?>" onclick= "if(! confirm('Are you sure?')){return false;}"><b>Delete</a></b> <?php } ?></td>
                </tr>    
             <?php endforeach ?>                                                              
                  </tbody>
