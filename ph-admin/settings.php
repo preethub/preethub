@@ -1,24 +1,23 @@
 <?php 
-require('admin-core.php');
 require('admin-header.php');
+settings();
 ?>    
-     <div class="heading">
+     <div class="title">
          Settings
         </div> 
+         <div class="widget"> 
+<div class="title">Settings</div>
             <div class="card">      <?php echo get_messages(); ?>     
             <form action="settings.php" method="post">                   
                   <label for="site-url"><b>Site Url </b></label>
-       <input name="siteurl" type="text" value="<?php echo $site_url; ?>" required>
-         <a href="<?php echo $site_url; ?>"><b><?php echo $site_url; ?></b></a>    <br>                                                
+       <input name="siteurl" type="text" value="<?php echo get_config('site_url'); ?>" required>
+         <a href="<?php echo get_config('site_url'); ?>"><b><?php echo get_config('site_url'); ?></b></a>  <br>  <br>                                                
                   <label for="site-name"><b>Site Name</b></label>
-                  <input name="sitename" type="text" value="<?php echo $site_name; ?>" required>
+                  <input name="sitename" type="text" value="<?php echo get_config('site_name'); ?>" required>
                   <label for="site-description"><b>Site Description </b></label>
-              <textarea class="form-control" name="sitedesc" rows="4"><?php echo $site_desc; ?></textarea>
-    <label for="post-per-page"><b>Posts per Page</b></label>
-                  <input name="postsperpage" type="text" value="<?php echo $posts_per_page; ?>" required>
+              <textarea name="sitedesc" rows="4"><?php echo get_config('site_description'); ?></textarea>
                   <input type="submit" name="settings">                
               </form>
             </div>
-<?php require('admin-footer.php');
-
-?>
+            </div>
+<?php require('admin-footer.php'); ?>
