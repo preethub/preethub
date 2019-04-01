@@ -19,8 +19,7 @@ $firstgetname = explode("=",$uri[1]);
 header("location:" . get_config('site_url'));
 		} 
 		
-if(isset($_GET['p'])){		
-	$id = (int) $_GET['p']; 	
+if(isset($_GET['p'])){			 	
 	page_title(get_page()->page_name ." - ". get_config('site_name'));	
 	default_page_view();	
 	}
@@ -29,7 +28,6 @@ if(isset($_GET['p'])){
 run_hook('isset_getparam');
 	
 }else{	
-	$id = get_config('site_index');
 	page_title(get_index()->page_name ." - ". get_config('site_name'));	
  	default_index_view();
 	}
