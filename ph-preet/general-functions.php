@@ -29,7 +29,7 @@ run_hook('isset_getparam');
 	
 }else{	
 	page_title(get_index()->page_name ." - ". get_config('site_name'));	
- 	default_index_view();
+ 	default_page_view();
 	}
 }
 
