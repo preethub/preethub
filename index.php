@@ -1,8 +1,17 @@
 <?php
-// preethub
-// Index file
+
+ /*-------------
+ * Index file
+ * Preethub
+ * Released under the terms and conditions of the
+ * GNU General Public License (http://www.gnu.org/licenses/gpl.txt)
+ * github.com/preethub/preethub
+ *-------------*/
+ 
+ 
+/*--- session_start ---*/
 session_start();
-require ('ph-load.php');
-require('ph-preet/geturl.php');
-require get_url($_url[0]);
-?>
+/*--- REQUIRE PREET.PHP ---*/
+require('preet.php');
+/*--- RUN PREET() ---*/
+preet();
