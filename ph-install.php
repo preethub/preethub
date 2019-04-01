@@ -13,7 +13,7 @@ if(file_exists('ph-config.php')){
 	require 'ph-config.php';
 	require 'ph-preet/phdb.php';
 	
-	if($phdb->query("SELECT * FROM ". TABLE_PREFIX ."users")){
+	if($phdb->query("SELECT * FROM $phdb->config")){
 		die('You have already installed successfully Preethub. If you want to make any change in configuration, login into admin panel');
 	}
 	
@@ -55,7 +55,7 @@ define('TABLE_PREFIX', $_POST['prefix']);
 
 require('ph-preet/phdb.php');
 
-require_once('ph-preet/setup.php');
+require_once('ph-preet/install-setup.php');
 
 create_config_file();	
 
