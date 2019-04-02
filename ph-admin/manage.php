@@ -28,8 +28,9 @@ delete_page(); ?>
  <tr>
 <td> <?php echo $page->page_id; ?></td>
 <td> <?php echo $page->page_name; ?> </td>
-<td> <a href="<?php echo get_config('site_url'); ?>/?p=<?php echo $page->page_id ?>">View</a> - <a href="edit.php?type=page&id=<?php echo $page->page_id ?>">Edit</a> - <a href="?type=page&delete=<?php echo $page->page_id; ?>" onclick= "if(! confirm('Are you sure?')){return false;}"><b>Delete</b></a></td>
- </tr>
+<td> <?php echo $page->page_name; ?> </td>
+<td> <a href="<?php echo get_config('site_url'); ?>/?p=<?php echo $page->page_id ?>">View</a> - <a href="edit.php?type=page&id=<?php echo $page->page_id ?>">Edit</a> - <?php if(get_config('site_index') ===  $page->page_id){ ?> <a onclick= "alert('Index page can not be deleted')"><b>Delete</b></a> <?php }else{ ?> <a href="?type=page&delete=<?php echo $page->page_id; ?>" onclick= "if(! confirm('Are you sure?')){return false;}"><b>Delete</b></a>  <?php } ?></td>
+</tr>
  <?php endforeach; } ?>                                                                       
                  </tbody>
                   </table>   
