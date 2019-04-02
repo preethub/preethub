@@ -20,7 +20,7 @@ $admin_menu['Users'] = array(
 
 $admin_menu['Pages'] = array(
 'url' => 'manage.php?type=page',
-'icon' => 'fa-bar-chart');
+'icon' => 'fa-file-text');
 
 $admin_menu['Plugin Manager'] = array(
  'url' => 'plugins.php',
