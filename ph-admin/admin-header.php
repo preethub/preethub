@@ -29,24 +29,24 @@ require('admin-core.php');
 			
 	<?php 
 run_hook('admin_menu');
-	foreach($admin_menu as $menuname => $menud){
+	
+foreach($admin_menu as $menuname => $menud){
 
-if(!empty($admin_submenu[$menuname])){
-	?>
+if(!empty($admin_submenu[$menuname])){  ?>
   
-  <li><i class='fa fa-pie-chart'></i><span><?php echo $menuname ?></span>
+  <li><i class='fa <?php echo  $menud['icon'] ?>'></i><span><?php echo $menuname ?></span>
   <i class='fa fa-angle-left pull-right'></i>
 	<ul class="submenu">
 	<li>
 	<a href="<?php echo  $menud['url'] ?>">  
-	<span><i class="fa <?php echo  $menud['icon'] ?>"></i>	</span>
+	<span><i class="fa fa-circle-o"></i>	</span>
 	<span><?php echo $menuname ?></span></a>
  </li>
 <?php 
 foreach($admin_submenu[$menuname] as $theme){
 ?>
 <li><a href="<?php echo $theme['url'] ?>">  
-	<span><i class="fa <?php echo  $menud['icon'] ?>"></i>	</span>
+	<span><i class="fa fa-circle-o"></i>	</span>
 	<span><?php echo  $theme['name'] ?></span></a>
  </li></ul></li>
 
