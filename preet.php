@@ -22,11 +22,11 @@ define('UPLOAD_PATH', "ph-extend/uploads");
 
 if(file_exists(dirname(__FILE__) . '/ph-config.php')){
 require('ph-config.php');
-}else{		if(file_exists(dirname(__FILE__) . '/ph-install.php')){
-header("location: ../ph-install.php");
-}elseif(file_exists(dirname(dirname(__FILE__)) . '/ph-install.php')){
-header("location: ../../ph-install.php"); } 
-
+}else{		if(file_exists('ph-install.php')){
+header("location: ph-install.php");
+ }elseif(file_exists(dirname(dirname(__FILE__) . '/ph-install.php'))){
+header("location: ../ph-install.php"); 
+ } 
 }
 
 require('ph-preet/query-functions.php');
