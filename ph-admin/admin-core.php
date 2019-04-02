@@ -8,7 +8,7 @@ if(is_logged()){
 }else{
 header('location:' . get_config('site_url'));
 }
-require('functions/functions.php');
+require('includes/functions.php');
 
 $admin_menu['Dashboard'] = array(
  'url' => 'index.php',
