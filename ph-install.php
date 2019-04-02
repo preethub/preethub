@@ -96,7 +96,7 @@ Admin password<br/>
 
 <?php		
 	}elseif($step == 2){
-require_once('ph-preet/setup.php');
+require_once('ph-preet/install-setup.php');
 
 $tables_array = explode(";",$tables_structure);
 	
