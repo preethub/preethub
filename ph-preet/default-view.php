@@ -1,461 +1,254 @@
 <?php
-
- /*------------
- * Default view 
- * Preethub
- * Released under the terms and conditions of the
- * GNU General Public License (http://www.gnu.org/licenses/gpl.txt)
+/**
+ * Preethub Default View Template
+ * Licensed under the GNU GPL (http://www.gnu.org/licenses/gpl.txt)
  * github.com/preethub/preethub
- *------------*/
+ */
 
+/*==========================
+    Default CSS Styles
+==========================*/
+function default_css() { ?>
+    <style>
+        :root {
+            --primary-bg: #3d4f5d;
+            --accent: #ed786a;
+            --accent-hover: #fd887a;
+            --sidebar-bg: #f0f0f0;
+            --footer-bg: #e5e8e8;
+            --border: #e5e5e5;
+            --brand: #89b3cc;
+            --link: #333;
+        }
 
+        *, *::before, *::after { box-sizing: border-box; }
 
-//FUNCTION DEFAULT CSS
-function default_css(){
-	?>
-	<style>
-	*{
-	box-sizing: border-box;
-	
-}
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: var(--link);
+            background: #fafbfc;
+        }
 
-body{
-	margin:0;
-	padding:0;
-}
+        a {
+            color: var(--link);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        a:hover, a:focus { color: var(--brand); text-decoration: underline; }
 
-a {
-    text-decoration: none;
-  /*  color: rgb(61, 146, 201); */
-  color:#333;
-}
-a:hover,
-a:focus {
-    text-decoration: underline;
-}
+        header.header {
+            background: var(--primary-bg);
+            color: #fff;
+            padding: 3em 2em;
+            text-align: center;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+        }
+        .brand-title {
+            font-size: 2.2em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0 0 0.3em 0;
+        }
+        .brand-tagline {
+            font-size: 1.1em;
+            font-weight: 300;
+            color: #b0cadb;
+            margin: 0;
+        }
 
-h2{
-	margin-top:0;
-}
+        #sidebar {
+            background: var(--sidebar-bg);
+            padding: 1.5em 1em;
+            border-right: 1px solid var(--border);
+        }
+            ul.widget {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            ul.widget > h3 {
+                font-size: 1.1em;
+                font-weight: bold;
+                margin-bottom: 0.7em;
+            }
+            ul.widget > li {
+                padding: 0.6em 0;
+                border-top: 2px solid var(--border);
+            }
+            ul.widget > li:last-child {
+                border-bottom: 2px solid var(--border);
+            }
 
-h3 {
-    font-weight: 900;
-    margin:0 0 0.5em 0;
-}
+        #content {
+            padding: 2em 3em 1em 3em;
+            background: #fff;
+            min-height: 80vh;
+        }
 
-p{
-	margin:0.25em 0 0.25em 0;
-}
+        .post-title {
+            font-size: 2.1em;
+            color: #2c3e50;
+            margin-bottom: 0.4em;
+        }
+        .post-description {
+            font-family: Georgia, Cambria, serif;
+            font-size: 1.12em;
+            color: #444;
+            line-height: 1.8;
+        }
 
-/* LAYOUT CSS */
-.pure-img-responsive {
-    max-width: 100%;
-    height: auto;
-}
+        /* Forms */
+        form label {
+            font-weight: 600;
+            color: #888;
+            margin-bottom: 0.3em;
+            display: block;
+        }
+        form input[type="text"],
+        form input[type="password"],
+        form input[type="email"],
+        form textarea {
+            width: 100%;
+            padding: 0.75em 1em;
+            border: none;
+            border-radius: 5px;
+            background: #e8e8e8;
+            font-size: 1em;
+            margin-bottom: 1.1em;
+            transition: background 0.2s;
+        }
+        form input:focus, form textarea:focus {
+            background: #f0f0f0;
+            outline: 2px solid var(--brand);
+        }
+        form input[type="submit"], .button {
+            background: var(--accent);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 1em 0;
+            width: 100%;
+            margin-top: 0.5em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        form input[type="submit"]:hover, .button:hover {
+            background: var(--accent-hover);
+        }
 
-.header {
-    	background: rgb(61, 79, 93);
-    color: #fff;
-    text-align: center;
-    top: auto;
-    padding: 3em; 
-}
+        /* Footer */
+        #footer {
+            text-align: center;
+            background: var(--footer-bg);
+            color: #888;
+            padding: 1em 0;
+            border-top: 2px solid var(--border);
+            font-size: 0.98em;
+        }
 
-#sidebar {
-  position:relative;
-  color:#000;
-  padding:1em;
-  background: #f0f0f0; 	
-}
+        /* Responsive */
+        @media (min-width: 900px) {
+            #content { width: 75%; float: left;}
+            #sidebar { width: 25%; float: left;}
+            header.header { text-align: left; }
+        }
+    </style>
+<?php }
 
-ul.widget{ 
- margin:0;
-	padding-left:0;
-}
+/*==========================
+    HTML Structure Functions
+==========================*/
 
-ul.widget > li{
-	border-top: solid 2px #e5e5e5;
-	list-style:none;
-	padding:0.5em 0 0.5em 0;
-}
-ul.widget > li:last-child{
-	border-bottom: solid 2px #e5e5e5;
-}
-
-.brand-title,
-.brand-tagline {
-    margin: 0;
-}
-.brand-title {
-    text-transform: uppercase;
-}
-.brand-tagline {
-    font-weight: 300;
-    color: rgb(176, 202, 219); 
-}
-
-.side-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-.side-item {
-    display: inline-block;
-    *display: inline;
-    zoom: 1;
-}
-.side-item a {
-    background: transparent;
-    border: 2px solid rgb(176, 202, 219);
-    color: #fff;
-    margin-top: 1em;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    font-size: 85%;
-}
-.side-item a:hover,
-.side-item a:focus {
-    border: 2px solid rgb(61, 146, 201);
-    text-decoration: none;
-}
-
-.content-subhead {
-    text-transform: uppercase;
-    color: #aaa;
-    border-bottom: 1px solid #eee;
-    padding: 0.4em 0;
-    font-size: 80%;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-}
-
-#content {	   
-    padding:1em;
-    overflow:hidden;
-}
-
-.post {
-    padding-bottom: 2em;
-}
-.post-title {
-    font-size: 2em;
-    color: #222;
-    margin-bottom: 0.2em;
-}
-.post-avatar {
-    border-radius: 50px;
-    float: right;
-    margin-left: 1em;
-}
-.post-description {
-    font-family: Georgia, "Cambria", serif;
-    color: #444;
-    line-height: 1.8em;
-}
-.post-meta {
-    color: #999;
-    font-size: 90%;
-    margin: 0;
-}
-
-.post-category {
-    margin: 0 0.1em;
-    padding: 0.3em 1em;
-    color: #fff;
-    background: #999;
-    font-size: 80%;
-}
-    .post-category-design {
-        background: #5aba59;
-    }
-    .post-category-pure {
-        background: #4d85d1;
-    }
-    .post-category-yui {
-        background: #8156a7;
-    }
-    .post-category-js {
-        background: #df2d4f;
-    }
-
-.post-images {
-    margin: 1em 0;
-}
-.post-image-meta {
-    margin-top: -3.5em;
-    margin-left: 1em;
-    color: #fff;
-    text-shadow: 0 1px 1px #333;
-}
-		
-/* Button */
-input[type="submit"],
-.button {
-  -webkit-appearance: none; 
-		position: relative;
-		display: inline-block;
-		background: #ed786a;
-		color: #fff !important;
-		text-transform: uppercase;
-		border-radius: 4px;
-		border: 0;
-		outline: 0;
-		font-size: 1em;
-		box-shadow: 0.125em 0.175em 0 0 rgba(0, 0, 0, 0.125);
-		font-weight: 600;
-		text-align: center;
-		font-size: 0.85em;
-		letter-spacing: 2px;
-  padding:1em 0 1em 0; 
-		width: 100%;		
-		margin-top:1em;
-	}
-	
-	input[type="submit"],
-	.button:hover {
-			background: #fd887a;
-		}
-		
-		/* Form */
-
-	form label {
-		font-weight: 600;
-		text-transform: uppercase;
-		color: #888;
-		display: block;
-		margin: 0 0 1em 0;	
-	}
-
-	form input[type="text"],
-	form input[type="email"]
-	input[type="password"],
-	form select,
-	form textarea {
-		-webkit-appearance: none;
-		display: block;
-		border: 0;
-		background: #e8e8e8;
-		width: 100%;
-		box-shadow: inset 2px 2px 0px 0px rgba(0, 0, 0, 0.1);
-		border-radius: 4px;
-		line-height: 1.25em;
-		padding: 0.75em 0 0.75em 1em;
-	}
-
-		form input[type="text"]:focus,
-		form input[type="email"]
-		input[type="password"]:focus,
-		form select:focus,
-		form textarea:focus {
-			background: #f0f0f0;
-		}
-
-	form textarea {
-		min-height: 11em;
-	}
-
-	form ::-webkit-input-placeholder {
-		color: #555 !important;
-		line-height: 1.35em;
-		padding: 0 0 0 1em;
-	}
-
-	form :-moz-placeholder {
-		color: #555 !important;
-		padding: 0 0 0 1em;
-	}
-
-	form ::-moz-placeholder {
-		color: #555 !important;
-		padding: 0 0 0 1em;
-	}
-
-	form :-ms-input-placeholder {
-		color: #555 !important;
-		padding: 0 0 0 1em;
-	}
-
-	form ::-moz-focus-inner {
-		border: 0;
-	}
-
-			
-	#footer { 
- width:100%;	
-	overflow: hidden; 		
-	border-top: solid 2px #e5e5e5; 		
-	background: #E5E8E8; 		
-	padding: 1em 0 1em 0; 
-	text-align:center;
-	color: #888;
-		}
-	
-.pagination{
-   margin: 0;
-   padding: 0;
-}
-.pagination li{
-  display: inline; 
-  padding: 6px 10px 6px 10px;
-  border: 1px solid #ddd;
-  margin-right: -1px;
-  font: 13px/20px Arial, Helvetica, sans-serif;
-  background: #FFFFFF;
-}
-.pagination li a{
-	text-decoration:none;
-	color: black;
-}
-.pagination li:hover{ 
-background: #EEE;
-}
-
-.pagination li.current {
-	background: #89B3CC;
-	border: 1px solid #89B3CC;
-color: #FFFFFF;
-}
-
-@media (min-width: 48em) {
-    #content {
-        padding: 2em 3em 0;
-        width: 75%;
-        float:left;
-    }
-
-    .header {
-          text-align: left;
-    }
-
-    #sidebar {  
-        margin-top:1em;  
-        background:#fff;
-        position:relative;
-        float:left;
-        width:25%;  
-         
-    }
-
-    #footer {
-        text-align: center;
-    }
-}	
-	</style>	
-<?php	
-}
-
-//FUNCTION DEFAULT HEADER VIEW
-function default_header_view(){	
-echo '<!DOCTYPE html>
-<html lang="en-US">
+function default_header_view() {
+    echo '<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>'. page_title() .'</title>
-'. default_css() .'   
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>' . htmlspecialchars(page_title()) . '</title>';
+    default_css();
+    echo '</head>
 <body>
 <header class="header">
-<h1 class="brand-title">
-'. get_config("site_name") .'
-</h1>
-<h2 class="brand-tagline">
-'. get_config("site_description") .'
-</h2>
+    <h1 class="brand-title">' . htmlspecialchars(get_config('site_name')) . '</h1>
+    <div class="brand-tagline">' . htmlspecialchars(get_config('site_description')) . '</div>
 </header>';
 }
 
-//FUNCTION DEFAULT SIDEBAR VIEW
-function default_sidebar_view(){
-echo '<section id="sidebar">
-  <ul class="widget">         
-     <h3>Links</h3>'; 
-   if(is_logged()){  
-echo '<li>          
- <a href="'. get_config("site_url") .'/ph-action.php?action=logout">Logout</a></li>';
-if(loggeduser()->role === "Admin"){   	
-echo '<li><a href="'. get_config("site_url") .'/ph-admin">Admin Panel</a></li>';
- }    
-  }else{ 
-echo '<li>          
- <a href="'. get_config("site_url") .'/ph-action.php?action=login">Login</a>
- </li>
-  <li>          
- <a href="'. get_config("site_url") .'/ph-action.php?action=signup">Signup</a>
- </li>'; 
-   } run_hook('sidebar'); 
-echo  '</ul>
-  </section>';
+function default_sidebar_view() {
+    echo '<section id="sidebar">
+    <ul class="widget">
+        <h3>Links</h3>';
+    if (is_logged()) {
+        echo '<li><a href="' . htmlspecialchars(get_config('site_url')) . '/ph-action.php?action=logout">Logout</a></li>';
+        if (loggeduser()->role === "Admin") {
+            echo '<li><a href="' . htmlspecialchars(get_config('site_url')) . '/ph-admin">Admin Panel</a></li>';
+        }
+    } else {
+        echo '<li><a href="' . htmlspecialchars(get_config('site_url')) . '/ph-action.php?action=login">Login</a></li>
+              <li><a href="' . htmlspecialchars(get_config('site_url')) . '/ph-action.php?action=signup">Signup</a></li>';
+    }
+    run_hook('sidebar');
+    echo '</ul>
+</section>';
 }
 
-//FUNCTION DEFAULT FOOTER VIEW
-function default_footer_view(){	 
-echo '<footer id="footer">
-       Copyright &copy; 
-   '. get_config("site_name") .'  
-      </footer>
-  </body>
+function default_footer_view() {
+    echo '<footer id="footer">
+        &copy; ' . date('Y') . ' ' . htmlspecialchars(get_config('site_name')) . '
+    </footer>
+</body>
 </html>';
 }
 
-//FUNCTION DEFAULT LOGIN VIEW
-function default_login_view(){
-//Default header
-default_header_view(); 	 
-echo '<section id="content">
- <div class="card">
-<h3>Login</h3>
-'. get_messages() .'
-  <form action="ph-action.php?action=login" method="post">
-    <label for="fname">User Name</label>
-    <input type="text" id="fname" name="username" placeholder="Your name..">
-    <label for="lname">Password</label>
-    <input type="text" id="lname" name="password" placeholder="Your last name..">
-    <input type="submit" value="Login" name="login">
-  </form>
-</div>
+function default_login_view() {
+    default_header_view();
+    echo '<section id="content">
+    <div class="card">
+        <h3>Login</h3>' . get_messages() . '
+        <form action="ph-action.php?action=login" method="post" autocomplete="off">
+            <label for="login-username">User Name</label>
+            <input type="text" id="login-username" name="username" placeholder="Your username" required>
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" name="password" placeholder="Your password" required>
+            <input type="submit" value="Login" name="login">
+        </form>
+    </div>
 </section>';
-//Default footer
-default_footer_view(); 	
+    default_footer_view();
 }
 
-// FUNCTION DEFAULT SIGNUP VIEW
-function default_signup_view(){
-//Default header
-default_header_view();	 
-echo '<section id="content">
-<h2> Signup </h2>
- '. get_messages() .'
-  <form action="ph-action.php?action=signup" method="post">
-    <label for="pname">User Name</label>
-    <input type="text" id="phuname" name="username" placeholder="Your username..">
-<label for="phemail">Email</label>
-    <input type="text" id="phemail" name="email" placeholder="Your email..">
-    <label for="phpass">Password</label>
-    <input type="text" id="phpass" name="password" placeholder="Your password.."> 
-    <input type="submit" value="signup" name="signup">
-  </form> 
+function default_signup_view() {
+    default_header_view();
+    echo '<section id="content">
+    <h2>Signup</h2>' . get_messages() . '
+        <form action="ph-action.php?action=signup" method="post" autocomplete="off">
+            <label for="signup-username">User Name</label>
+            <input type="text" id="signup-username" name="username" placeholder="Your username" required>
+            <label for="signup-email">Email</label>
+            <input type="email" id="signup-email" name="email" placeholder="Your email" required>
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" name="password" placeholder="Your password" required>
+            <input type="submit" value="Signup" name="signup">
+        </form>
 </section>';
-//Default footer
-default_footer_view();	
+    default_footer_view();
 }
 
-//FUNCTION DEFAULT PAGE VIEW
-function default_page_view(){
-	//Default header
-default_header_view(); 
-echo '<section id="content">  
-      <div class="post"> 
-       <h2 class="post-title"> 
- '. get_page()->page_name .'
- </h2>   
- <div class="post-description">                       
-'. get_page()->content .'
-         </div>
-         </div>
-  </section>';
- //Default sidebar
-default_sidebar_view(); 
-//Default footer
-default_footer_view();
+function default_page_view() {
+    default_header_view();
+    echo '<section id="content">
+    <div class="post">
+        <div class="post-title">' . htmlspecialchars(get_page()->page_name) . '</div>
+        <div class="post-description">' . get_page()->content . '</div>
+    </div>
+</section>';
+    default_sidebar_view();
+    default_footer_view();
 }
+?>
