@@ -1,84 +1,94 @@
-<?php 
-
-require('admin-header.php');
-require('includes/plugins.php');
-
-
-
-//Activate Plugin
-if ('activate' == $_GET['action']) {
-	$active_plugins = get_config('active_plugins');
-	if(!is_array($active_plugins))
-		$active_plugins = array();
-
-	$active_plugins[] = trim( $_GET['plugin'] );
-	
-		if(!$phdb->query("UPDATE $phdb->config SET config_value='".serialize(array_unique($active_plugins))."' Where config_name='active_plugins'")){
-	die('error'); }
-	
-		header('Location: plugins.php?activate=true');
-	}
-	
-// Deactivate Plugin
-	if ('deactivate' == $_GET['action']) {
-		$active_plugins = get_config('active_plugins');
-
-	if(!is_array($active_plugins))
-		$active_plugins = array();
-	
-	array_splice($active_plugins, array_search( $_GET['plugin'], $active_plugins), 1 );
-	
-	if(!$phdb->query("UPDATE $phdb->config SET config_value='".serialize(array_unique($active_plugins))."' Where config_name='active_plugins'")){
-	die('error'); }
-
-		header('Location: plugins.php?deactivate=true'); 
-	}
-?>
- <div class="title">	<i class="fa fa-tachometer"></i> All Plugins</div> 
-    
-  <?php
-
-//Check Plugins
-if (empty(get_plugins())) {
-echo	"<p>Couldn't open plugins directory or there are no plugins available.</p>"; // TODO: make more helpful
-} else { 
-
-	if (isset($_GET['activate'])) : ?>
-<p>Plugin <strong>activated</strong>.</p>
-<?php endif; ?>
-<?php if (isset($_GET['deactivate'])) : ?>
-<p>Plugin <strong>deactivated</strong></p>
-
-<?php endif;  
-
-//Plugins
-	foreach(get_plugins() as $plugin_file => $plugin_data) {
-	?>	
-		 <div class="widget card">
-
 <?php
-echo "<div class='content'>
-			<b>{$plugin_data['Title']}</b>	- ";
+require 'admin-header.php';
+require 'includes/plugins.php';
+
+// --- Helper Functions ---
+function get_safe($key) {
+    return isset($_GET[$key]) ? htmlspecialchars(trim($_GET[$key])) : '';
+}
+
+// --- Main Processing ---
+$action = get_safe('action');
+$plugin = get_safe('plugin');
 $active_plugins = get_config('active_plugins');
-//Check plugin activate or not
-if (!empty($active_plugins) && in_array($plugin_file, $active_plugins)) {
-	
-	//Deactivate Link
-			echo "<a href='plugins.php?action=deactivate&amp;plugin=$plugin_file' title='Deactivate this plugin'>Deactivate</a>";
+if (!is_array($active_plugins)) $active_plugins = [];
 
-		} else {
-			//Activate Link
-			echo "<a href='plugins.php?action=activate&amp;plugin=$plugin_file' title='Activate this plugin'>Activate</a>";
-		}
+$all_plugins = get_plugins();
 
-		echo "<br>
-	Version	{$plugin_data['Version']}
-	- Author {$plugin_data['Author']} <br>
-		{$plugin_data['Description']}<br/></div>";
-		?>
-		</div>
-<?php } 
+if ($action === 'activate' && array_key_exists($plugin, $all_plugins)) {
+    if (!in_array($plugin, $active_plugins)) {
+        $active_plugins[] = $plugin;
+        $success = $phdb->query(
+            "UPDATE {$phdb->config} SET config_value='" .
+            serialize(array_unique($active_plugins)) .
+            "' WHERE config_name='active_plugins'"
+        );
+        if (!$success) die('Error activating plugin.');
+        header('Location: plugins.php?activate=true');
+        exit;
+    }
+}
 
- }
-require('admin-footer.php');
- 
+if ($action === 'deactivate' && array_key_exists($plugin, $all_plugins)) {
+    $idx = array_search($plugin, $active_plugins);
+    if ($idx !== false) {
+        array_splice($active_plugins, $idx, 1);
+        $success = $phdb->query(
+            "UPDATE {$phdb->config} SET config_value='" .
+            serialize(array_unique($active_plugins)) .
+            "' WHERE config_name='active_plugins'"
+        );
+        if (!$success) die('Error deactivating plugin.');
+        header('Location: plugins.php?deactivate=true');
+        exit;
+    }
+}
+?>
+
+<div class="title"><i class="fa fa-tachometer"></i> All Plugins</div>
+
+<?php if (isset($_GET['activate'])): ?>
+    <div class="alert alert-success">Plugin <strong>activated</strong>.</div>
+<?php endif; ?>
+<?php if (isset($_GET['deactivate'])): ?>
+    <div class="alert alert-warning">Plugin <strong>deactivated</strong>.</div>
+<?php endif; ?>
+
+<?php if (empty($all_plugins)): ?>
+    <p class="alert alert-info">
+        Couldn’t open plugins directory or there are no plugins available.
+    </p>
+<?php else: ?>
+    <div class="plugins-list">
+        <?php foreach ($all_plugins as $file => $data): 
+            $is_active = in_array($file, $active_plugins);
+            $title = htmlspecialchars($data['Title']);
+            $author = htmlspecialchars($data['Author']);
+            $version = htmlspecialchars($data['Version']);
+            $desc = nl2br(htmlspecialchars($data['Description']));
+            $toggle_action = $is_active ? 'deactivate' : 'activate';
+            $toggle_text   = $is_active ? 'Deactivate' : 'Activate';
+            $toggle_class  = $is_active ? 'btn-danger' : 'btn-success';
+        ?>
+        <div class="widget card plugin-card">
+            <div class="content">
+                <div class="plugin-header">
+                    <span class="plugin-title"><?php echo $title; ?></span>
+                    <a class="btn <?php echo $toggle_class; ?> btn-sm right"
+                       href="plugins.php?action=<?php echo $toggle_action; ?>&amp;plugin=<?php echo urlencode($file); ?>"
+                       title="<?php echo $toggle_text; ?> this plugin">
+                       <?php echo $toggle_text; ?>
+                    </a>
+                </div>
+                <div class="plugin-meta">
+                    Version: <span><?php echo $version; ?></span> &middot; 
+                    Author: <span><?php echo $author; ?></span>
+                </div>
+                <div class="plugin-description"><?php echo $desc; ?></div>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
+
+<?php require 'admin-footer.php'; ?>
