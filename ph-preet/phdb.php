@@ -1,72 +1,111 @@
 <?php
 
-/*--------------
-* phdb class
-* Preethub
-* Released under the terms and conditions of the
-* GNU General Public License (http://www.gnu.org/licenses/gpl.txt)
-* github.com/preethub/preethub
-*-------------*/
+/**
+ * Phdb Database Helper Class
+ * Elegant, robust MySQLi wrapper
+ * Preethub - Released under GNU GPL
+ */
+class phdb
+{
+    private mysqli $link;
 
+    /**
+     * Constructor - Establishes database connection
+     */
+    public function __construct(
+        string $dbHost,
+        string $dbUser,
+        string $dbPass,
+        string $dbName
+    ) {
+        $this->link = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
 
-
-class phdb {
-	
-        var $link = null;       
-
-        function __construct($db_host,$db_user,$db_pass,$db_name){
-            
-            $this->link = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
-            
-            if (!$this->link) die('Connect Error (' . mysqli_connect_errno() . ') '.mysqli_connect_error());
-            
-            mysqli_select_db($this->link, $db_name) or die(mysqli_error($this->link));
-            
-            return true;
+        if ($this->link->connect_error) {
+            throw new Exception(
+                'Database Connection Error (' .
+                $this->link->connect_errno . '): ' .
+                $this->link->connect_error
+            );
         }
-       function query($query){
+    }
 
-            return mysqli_query($this->link,$query);
-
+    /**
+     * Runs a general SQL query
+     */
+    public function query(string $sql): mysqli_result|bool
+    {
+        $result = $this->link->query($sql);
+        if ($result === false) {
+            throw new Exception('Query Error: ' . $this->link->error);
         }
-        function count($query){
-            $result = mysqli_query($this->link,$query);
+        return $result;
+    }
 
-            return mysqli_num_rows($result);
+    /**
+     * Returns the row count for a SELECT query
+     */
+    public function count(string $sql): int
+    {
+        $result = $this->query($sql);
+        return $result->num_rows;
+    }
 
+    /**
+     * Fetches multiple rows as objects
+     */
+    public function select(string $sql): array|false
+    {
+        $result = $this->query($sql);
+        $rows = [];
+        while ($row = $result->fetch_object()) {
+            $rows[] = $row;
         }
-       function select($query){
-        
-            $result = mysqli_query($this->link,$query);
-                        if(mysqli_num_rows($result) > 0)
+        return !empty($rows) ? $rows : false;
+    }
 
-                while($res = mysqli_fetch_object($result))
-                
-                    $arr[] = $res;
-                
-            if($arr) return $arr;
-            
-            return false;
+    /**
+     * Fetches a single row as an object
+     */
+    public function getRow(string $sql): object|false
+    {
+        $result = $this->query($sql);
+        if ($result->num_rows === 1) {
+            return $result->fetch_object();
         }
-       function get_row($query){
-            $result = mysqli_query($this->link,$query);
+        return false;
+    }
 
-            if(mysqli_num_rows($result) == 1)
+    /**
+     * Escapes a string for safe SQL usage
+     */
+    public function escape(string $str): string
+    {
+        return $this->link->real_escape_string($str);
+    }
 
-            $arr = mysqli_fetch_object($result);
-                            
-            if($arr) return $arr;
-            
-            return false;
+    /**
+     * Closes the database connection
+     */
+    public function close(): void
+    {
+        if ($this->link) {
+            $this->link->close();
         }
-        function escape($str){
+    }
 
-            return mysqli_real_escape_string($this->link,$str);
-        }	
-        }        
-  $phdb = new phdb(DB_HOST,DB_USER,DB_PASS,DB_NAME); 
-  
-   $phdb->config = TABLE_PREFIX . 'config';
- $phdb->pages = TABLE_PREFIX . 'pages';
- $phdb->users = TABLE_PREFIX . 'users'; 
-  
+    /**
+     * Magic method for property assignment, e.g., dynamic table names
+     */
+    public function __set(string $name, $value): void
+    {
+        $this->$name = $value;
+    }
+}
+
+// Usage Example
+// $db = new phdb(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+// $db->config = TABLE_PREFIX . 'config';
+// $db->pages = TABLE_PREFIX . 'pages';
+// $db->users = TABLE_PREFIX . 'users';
+
+?>
