@@ -1,165 +1,91 @@
- <?php
-
- /*--------------
- * Ph-install file
- * Preethub
- * Released under the terms and conditions of the
- * GNU General Public License (http://www.gnu.org/licenses/gpl.txt)
- * github.com/preethub/preethub
- *-------------*/
-
-
-if(file_exists('ph-config.php')){
-	require 'ph-config.php';
-	require 'ph-preet/phdb.php';
-	
-	if($phdb->query("SELECT * FROM $phdb->config")){
-		die('You have already installed successfully Preethub. If you want to make any change in configuration, login into admin panel');
-	}
-	
-	
-}
-
-
-?>
-<html>
-	<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Preethub Installer</title>
-		
-		<link rel="stylesheet" href="ph-admin/style/admin.css">	
-	</head>
-	<body>
-		<div class="installerlogo">
-		<span>Preethub Installer</span> </div>
-	<div class="installer">	
-	<div class="widget">
-	<div class="card">
 <?php
+// ph-install.php - Preethub Installation Script
 
-if(isset($_GET['step'])){
+// Enable error reporting for debugging during installation
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
-$step = (int) $_GET['step'];
-	
-	if($step == 1){
-		
-    // Test the db connection.
+// Define config file path
+define('CONFIG_FILE', __DIR__ . '/config.php');
 
-define('DB_HOST', $_POST['host']);
-define('DB_USER', $_POST['user']);
-define('DB_NAME', $_POST['name']);
-define('DB_PASS', $_POST['pass']);
-define('TABLE_PREFIX', $_POST['prefix']);
+// If config file exists, block reinstallation for security
+if (file_exists(CONFIG_FILE)) {
+    die("Installation has already been completed. Delete 'config.php' to reinstall.");
+}
 
-    // We'll fail here if the values are no good.
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $db_host = trim($_POST['db_host'] ?? '');
+    $db_user = trim($_POST['db_user'] ?? '');
+    $db_pass = trim($_POST['db_pass'] ?? '');
+    $db_name = trim($_POST['db_name'] ?? '');
 
-require('ph-preet/phdb.php');
+    // Basic validation
+    if (!$db_host || !$db_user || !$db_name) {
+        $error = "Please fill in all required fields.";
+    } else {
+        // Try connecting to the database
+        $mysqli = @new mysqli($db_host, $db_user, $db_pass, $db_name);
 
-require_once('ph-preet/install-setup.php');
+        if ($mysqli->connect_error) {
+            $error = "Database connection failed: " . htmlspecialchars($mysqli->connect_error);
+        } else {
+            // Create config.php with database credentials and basic config
+            $config_content = "<?php\n";
+            $config_content .= "// Preethub config file - generated on " . date('Y-m-d H:i:s') . "\n\n";
+            $config_content .= "return [\n";
+            $config_content .= "    'db_host' => '" . addslashes($db_host) . "',\n";
+            $config_content .= "    'db_user' => '" . addslashes($db_user) . "',\n";
+            $config_content .= "    'db_pass' => '" . addslashes($db_pass) . "',\n";
+            $config_content .= "    'db_name' => '" . addslashes($db_name) . "',\n";
+            $config_content .= "];\n";
 
-create_config_file();	
-
-
-	?>	
-<p>	
-Connection to the database server and database you specified was successful. 
-	</p>
-	Tables have been created.
-
-
-<p>
-Before we begin we need a little bit of information. Do not worry, you can always change these later.
-</p>
-
-<form action='?step=2' method='post'>
-<h3>blog details</h3>
-blog name<br/>
-<input type='text' name='site_name' value='Preethub'>
-<br/>
-blog description<br/>
-<input type='text' name='site_desc' value='My new preethub blog'>
-<br/>
-
-<h3>Administrator Account Detail</h3>
-Admin username<br/>
-<input type='text' name='adminusername'>
-<br/>
-Admin email<br/>
-<input type='text' name='adminemail'>
-<br/>
-Admin password<br/>
-<input type='text' name='adminpass'>
-<br/>
-
-<br/><input type='submit' value='Submit'>
-</form>
-
-<?php		
-	}elseif($step == 2){
-require_once('ph-preet/install-setup.php');
-
-$tables_array = explode(";",$tables_structure);
-	
-	foreach($tables_array as $table_array){
-		$phdb->query($table_array);
-	}
-
-$url = preg_replace('|/ph-install.php?.*|i', '', 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-echo $url;
-
-	
-	$phdb->query("INSERT INTO $phdb->pages (`page_id`, `user_id`, `page_name`,`content`) VALUES ('1', '1', 'Sat Shri Akal', '<b>Sat Sri Akal </b> is a Jaikara (lit. Call of Victory) now used, often, as a greeting by the followers of the Sikh religion. It is the second half of the Sikh Clarion call, given by the Tenth guru, Guru Gobind Singh, \"Bole So Nihal, Sat Sri Akal\", one will be blessed eternally who says that God is the ultimate truth.');");
-	
-	$phdb->query("INSERT INTO $phdb->config (`config_id`, `config_name`, `config_value`) VALUES
-('1', 'site_url', '".$url."'), ('2', 'site_name', '".$_POST['site_name']."'), ('3', 'site_description', '".$_POST['site_desc']."'), ('4', 'site_admin', '".$_POST['adminusername']."'), ('5', 'site_index', '1'), ('6', 'active_plugins', 'a:0:{}');");
-
-$options = array(
-    'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
-    'cost' => 12,
-  );
-  $password_hash = password_hash($_POST['adminpass'], PASSWORD_BCRYPT, $options);
-
-
-$phdb->query("INSERT INTO $phdb->users (`user_id`, `username`, `email`, `role`, `password`) VALUES ('1', '".$_POST['adminusername']."', '".$_POST['adminemail']."', 'Admin', '".$password_hash."');")
-
-
-?>		
-<p>	
-Preethub has successfully been installed and configured correctly.
-</p>
-<p>
-The Preethub Group thanks you for your support in installing our software and we hope to see you around the <a href="http://forum.preethub.com">Community Forums</a> if you need help or wish to become a part of the Preethub community.
-</p>
-
-<p>
-You may now proceed to your <a href="ph-admin">Admin Panel</a>.
-</p>
-
-<?php		
-	}	else{
-		header('location: ph-install.php');
-	}
-	
-}else{
-	
-	
-	?>	
-<p>		Welcome to preethub. Before getting started, we need some information on the database. You will need to know the following items before proceeding.
-		<p><br>
-	<form action='ph-install.php?step=1' method='post'>
-
-Database Host<br/><input type='text' name='host' value='localhost'><br/>
-Database User<br/><input type='text' name='user'><br/>
-Database Password<br/><input type='text' name='pass'><br/>
-Database Name<br/><input type='text' name='name'><br/>	
-Table Prefix<br/><input type='text' name='prefix' value="ph_"><br/>	
-		<br/><input type='submit' value='Submit'>
-</form>
-	<?php
+            // Write the config file
+            if (file_put_contents(CONFIG_FILE, $config_content) === false) {
+                $error = "Failed to write config file. Please check directory permissions.";
+            } else {
+                echo "<h2>Installation Successful</h2>";
+                echo "<p>Please delete or rename this installer script (<code>ph-install.php</code>) now for security reasons.</p>";
+                echo "<p><a href='index.php'>Go to your blog</a></p>";
+                exit;
+            }
+        }
+    }
 }
 ?>
-</div>
-</div>
-</div>
-	</body>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Preethub Installation</title>
+<style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+    label { display: block; margin: 15px 0 5px; }
+    input[type=text], input[type=password] { width: 100%; padding: 8px; }
+    .error { color: red; }
+    button { padding: 10px 20px; font-size: 16px; }
+</style>
+</head>
+<body>
+<h1>Preethub Installation</h1>
+<?php if (!empty($error)): ?>
+    <p class="error"><?= htmlspecialchars($error) ?></p>
+<?php endif; ?>
+<form method="post" action="">
+    <label for="db_host">Database Host</label>
+    <input type="text" id="db_host" name="db_host" value="<?= htmlspecialchars($_POST['db_host'] ?? 'localhost') ?>" required />
+
+    <label for="db_user">Database Username</label>
+    <input type="text" id="db_user" name="db_user" value="<?= htmlspecialchars($_POST['db_user'] ?? '') ?>" required />
+
+    <label for="db_pass">Database Password</label>
+    <input type="password" id="db_pass" name="db_pass" value="<?= htmlspecialchars($_POST['db_pass'] ?? '') ?>" />
+
+    <label for="db_name">Database Name</label>
+    <input type="text" id="db_name" name="db_name" value="<?= htmlspecialchars($_POST['db_name'] ?? '') ?>" required />
+
+    <button type="submit">Install</button>
+</form>
+</body>
 </html>
