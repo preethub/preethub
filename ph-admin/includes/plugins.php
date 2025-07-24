@@ -1,83 +1,94 @@
-<?php 
-// Plugin System
+<?php
+// -- Plugin System --
 
+/**
+ * Extract plugin metadata from a file header.
+ *
+ * @param string $filepath Path to the plugin PHP file.
+ * @return array Associative array of plugin data.
+ */
+function getPluginData(string $filepath): array
+{
+    $content = @file_get_contents($filepath);
+    if ($content === false) {
+        return [];
+    }
 
+    $fields = [
+        'Plugin Name' => '',
+        'Plugin URI' => '',
+        'Description' => '',
+        'Author' => '',
+        'Author URI' => '',
+        'Version' => ''
+    ];
 
-function get_plugin_data($plugin_file) {
-	$plugin_data = implode('', file($plugin_file));
-	preg_match("|Plugin Name:(.*)|i", $plugin_data, $plugin_name);
-	preg_match("|Plugin URI:(.*)|i", $plugin_data, $plugin_uri);
-	preg_match("|Description:(.*)|i", $plugin_data, $description);
-	preg_match("|Author:(.*)|i", $plugin_data, $author_name);
-	preg_match("|Author URI:(.*)|i", $plugin_data, $author_uri);
-	if ( preg_match("|Version:(.*)|i", $plugin_data, $version) )
-		$version = $version[1];
-	else
-		$version ='';
+    foreach ($fields as $field => $_) {
+        if (preg_match("/^$field:\s*(.+)$/mi", $content, $matches)) {
+            $fields[$field] = trim($matches[1]);
+        }
+    }
 
-	$description = $description[1];
-
-	$name = $plugin_name[1];
-	$name = trim($name);
-	$plugin = $name;
-	if ('' != $plugin_uri[1] && '' != $name) {
-		$plugin = '<a href="' . $plugin_uri[1] . '" title="Visit plugin homepage">' . $plugin . '</a>';
-	}
-
-	if ('' == $author_uri[1]) {
-		$author = $author_name[1];
-	} else {
-		$author = '<a href="' . $author_uri[1] . '" title="Visit author homepage">' . $author_name[1] . '</a>';
-	}
-
-	return array('Name' => $name, 'Title' => $plugin, 'Description' => $description, 'Author' => $author, 'Version' => $version);
+    return [
+        'Name'        => $fields['Plugin Name'],
+        'Title'       => !empty($fields['Plugin URI']) && !empty($fields['Plugin Name'])
+                            ? sprintf(
+                                '<a href="%s" title="Visit plugin homepage">%s</a>',
+                                htmlspecialchars($fields['Plugin URI']),
+                                htmlspecialchars($fields['Plugin Name'])
+                              )
+                            : htmlspecialchars($fields['Plugin Name']),
+        'Description' => $fields['Description'],
+        'Author'      => !empty($fields['Author URI'])
+                            ? sprintf(
+                                '<a href="%s" title="Visit author homepage">%s</a>',
+                                htmlspecialchars($fields['Author URI']),
+                                htmlspecialchars($fields['Author'])
+                              )
+                            : htmlspecialchars($fields['Author']),
+        'Version'     => $fields['Version'],
+    ];
 }
 
+/**
+ * Discover and load all plugins from the plugins directory.
+ *
+ * @return array Associative array of plugin metadata.
+ */
+function getPlugins(): array
+{
+    $pluginsDir = rtrim(PH_PATH . PLUGINS_PATH, '/');
+    if (!is_dir($pluginsDir)) {
+        return [];
+    }
 
+    $pluginFiles = [];
+    foreach (scandir($pluginsDir) as $item) {
+        if ($item === '.' || $item === '..') continue;
+        $path = "$pluginsDir/$item";
 
-function get_plugins() {
-	
-	$plugins = array();
+        if (is_dir($path)) {
+            foreach (scandir($path) as $subitem) {
+                if ($subitem[0] === '.') continue;
+                if (strtolower(substr($subitem, -4)) === '.php') {
+                    $pluginFiles[] = "$item/$subitem";
+                }
+            }
+        } elseif (strtolower(substr($item, -4)) === '.php') {
+            $pluginFiles[] = $item;
+        }
+    }
 
-	$plugins_dir = @ dir(PH_PATH . PLUGINS_PATH);
-	if ($plugins_dir) {
-		while(($file = $plugins_dir->read()) !== false) {
-			if ( preg_match('|^\.+$|', $file) )
-				continue;
-			if (is_dir(PH_PATH . PLUGINS_PATH . '/' . $file)) {
-				$plugins_subdir = @ dir(PH_PATH . PLUGINS_PATH . '/' . $file);
-				if ($plugins_subdir) {
-					while(($subfile = $plugins_subdir->read()) !== false) {
-						if ( preg_match('|^\.+$|', $subfile) )
-							continue;
-						if ( preg_match('|\.php$|', $subfile) )
-							$plugin_files[] = "$file/$subfile";
-					}
-				}
-			} else {
-				if ( preg_match('|\.php$|', $file) ) 
-					$plugin_files[] = $file;
-			}
-		}
-	}
+    sort($pluginFiles);
 
-	if (!$plugins_dir || !$plugin_files) {
-		return;
-	}
+    $plugins = [];
+    foreach ($pluginFiles as $file) {
+        $data = getPluginData("$pluginsDir/$file");
+        if (!empty($data['Name'])) {
+            $plugins[$file] = $data;
+        }
+    }
 
- sort($plugin_files);
-
-	foreach($plugin_files as $plugin_file) {
-	
- 	$plugin_data = get_plugin_data(PH_PATH . PLUGINS_PATH . '/' . $plugin_file);
-	
-		if (empty($plugin_data['Name'])) {
-		continue;
-	}
-
-$plugins[$plugin_file] = $plugin_data;
- 
+    return $plugins;
 }
-return $plugins;
-
-}
+?>
