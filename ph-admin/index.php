@@ -1,14 +1,28 @@
-<?php require('admin-header.php');  ?>
+<?php require('admin-header.php'); ?>
 
-      <div class="title">	<i class="fa fa-tachometer"></i> Dashboard</div>
-      <div class="widget">
-      <div class="title">Site Info</div>
-     <div class="card">
-         <p>  Total Users        -      <b><?php echo total_users() ?></b></p>
+<section class="dashboard">
+  <header class="dashboard-header">
+    <h1><i class="fa fa-tachometer"></i> Admin Dashboard</h1>
+  </header>
 
-  <p> Total Pages   -              <b><?php echo total_pages() ?></b></p>     
-<?php run_hook('admin_siteinfo') ?>      
-   </div> 
-   </div>         
+  <section class="widget">
+    <h2 class="widget-title">Site Information</h2>
+    
+    <div class="card site-stats">
+      <ul>
+        <li>
+          <span class="label">Total Users:</span>
+          <span class="value"><?php echo total_users(); ?></span>
+        </li>
+        <li>
+          <span class="label">Total Pages:</span>
+          <span class="value"><?php echo total_pages(); ?></span>
+        </li>
+      </ul>
 
-<?php  require('admin-footer.php'); ?>
+      <?php run_hook('admin_siteinfo'); ?>
+    </div>
+  </section>
+</section>
+
+<?php require('admin-footer.php'); ?>
