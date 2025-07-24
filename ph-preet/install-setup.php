@@ -1,9 +1,9 @@
 <?php
 /**
- * Preethub Setup Script
+ * Preethub Setup Script - Full Automation
  * Version 0.3
  * 
- * Creates 'ph-config.php' from template and outputs SQL to create tables.
+ * Creates 'ph-config.php' and creates required tables in the database.
  * Released under GNU GPL v3.
  */
 
@@ -21,45 +21,64 @@ define("TABLE_PREFIX", "{{TABLE_PREFIX}}");
 EOT;
 
 /**
- * Creates the config file 'ph-config.php' replacing placeholders with provided values
- * 
- * @param string $host DB hostname
- * @param string $user DB username
- * @param string $name DB name
- * @param string $pass DB password
- * @param string $prefix Table prefix
- * 
+ * Create 'ph-config.php' with database credentials.
+ *
+ * @param string $host
+ * @param string $user
+ * @param string $name
+ * @param string $pass
+ * @param string $prefix
  * @return void
  */
 function create_config_file($host, $user, $name, $pass, $prefix = 'ph_') {
     global $config_template;
-    
     $replace_keys = ['{{DB_HOST}}', '{{DB_USER}}', '{{DB_NAME}}', '{{DB_PASS}}', '{{TABLE_PREFIX}}'];
     $replace_vals = [$host, $user, $name, $pass, $prefix];
-    
+
     $config_content = str_replace($replace_keys, $replace_vals, $config_template);
-    
+
     file_put_contents('ph-config.php', $config_content);
-    echo "✅ Configuration file 'ph-config.php' created successfully.\n\n";
+    echo "✅ Configuration file 'ph-config.php' created successfully.\n";
 }
 
-// Your database credentials - replace these with actual values
+/**
+ * Execute multi-statement SQL to create tables.
+ *
+ * @param mysqli $conn MySQLi connection object
+ * @param string $sql  The multi-statement SQL string
+ * @return void
+ */
+function execute_sql($conn, string $sql) {
+    if ($conn->multi_query($sql)) {
+        do {
+            if ($result = $conn->store_result()) {
+                $result->free();
+            }
+        } while ($conn->more_results() && $conn->next_result());
+        echo "✅ Database tables created successfully.\n";
+    } else {
+        echo "❌ Error creating tables: (" . $conn->errno . ") " . $conn->error . "\n";
+        exit(1);
+    }
+}
+
+// Database credentials (replace these with your info)
 $db_host = 'localhost';
 $db_user = 'your_username';
 $db_name = 'your_database';
 $db_pass = 'your_password';
 $table_prefix = 'ph_';
 
-// Call function to create config file
+// Step 1: Create config file
 create_config_file($db_host, $db_user, $db_name, $db_pass, $table_prefix);
 
-// Define table names
-$pages_table = $table_prefix . 'pages';
-$users_table = $table_prefix . 'users';
+// Step 2: Prepare table names
+$pages_table  = $table_prefix . 'pages';
+$users_table  = $table_prefix . 'users';
 $config_table = $table_prefix . 'config';
 
-// SQL to create tables
-$tables_sql = <<<SQL
+// Step 3: Define SQL to create tables
+$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS `$pages_table` (
     `page_id` INT(11) NOT NULL AUTO_INCREMENT,
     `user_id` INT(11) NOT NULL,
@@ -90,9 +109,18 @@ CREATE TABLE IF NOT EXISTS `$config_table` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 SQL;
 
-// Output the SQL for user to run manually or run via DB script
-echo "--- Preethub Database Table Creation SQL ---\n\n";
-echo $tables_sql;
-echo "\n\n";
+// Step 4: Connect to the MySQL database
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
-// End of script
+if ($conn->connect_error) {
+    die("❌ Connection failed: " . $conn->connect_error . "\n");
+}
+echo "✅ Connected to MySQL database '{$db_name}' successfully.\n";
+
+// Step 5: Create tables
+execute_sql($conn, $sql);
+
+// Step 6: Close connection
+$conn->close();
+
+echo "🎉 Setup completed successfully.\n";
