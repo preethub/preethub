@@ -1,6 +1,6 @@
 <?php
 
- /*-------------
+/*-------------
  * Preet File
  * Preethub
  * Released under the terms and conditions of the
@@ -8,42 +8,46 @@
  * github.com/preethub/preethub
  *------------*/
 
-/*  PreetHub Version. */
-$ph_version = "0.3";
+/* PreetHub Version */
+$ph_version = "0.4";
 
-/*--- PH_PATH ---*/
-define('PH_PATH',dirname(__FILE__). '/');
+/* Define base paths */
+define('PH_PATH', __DIR__ . '/');
+define('PLUGINS_PATH', 'ph-extend/plugins');
+define('UPLOAD_PATH', 'ph-extend/uploads');
 
-// PLUGINS PATH
-define('PLUGINS_PATH','ph-extend/plugins');
-
-/*--- UPLOAD_PATH ---*/
-define('UPLOAD_PATH', "ph-extend/uploads");
-
-if(file_exists(dirname(__FILE__) . '/ph-config.php')){
-require('ph-config.php');
-}else{		if(file_exists('ph-install.php')){
-header("location: ph-install.php");
- }elseif(file_exists(dirname(dirname(__FILE__) . '/ph-install.php'))){
-header("location: ../ph-install.php"); 
- } 
+/* Configuration loading and installation redirect */
+if (file_exists(PH_PATH . 'ph-config.php')) {
+    require_once PH_PATH . 'ph-config.php';
+} else {
+    if (file_exists(PH_PATH . 'ph-install.php')) {
+        header('Location: ph-install.php');
+        exit;
+    } elseif (file_exists(dirname(PH_PATH) . '/ph-install.php')) {
+        header('Location: ../ph-install.php');
+        exit;
+    } else {
+        // Fallback error if config and installer not found
+        die('Configuration file not found and installer missing. Please upload "ph-config.php" or run the installer.');
+    }
 }
 
-require('ph-preet/query-functions.php');
+/* Include core modules */
+require_once PH_PATH . 'ph-preet/query-functions.php';
+require_once PH_PATH . 'ph-preet/phdb.php';
+require_once PH_PATH . 'ph-preet/general-functions.php';
+require_once PH_PATH . 'ph-preet/default-view.php';
 
-require('ph-preet/phdb.php');
+/* Initialize GET parameters */
+$getparams = ['p'];
 
-require('ph-preet/general-functions.php');
-
-require('ph-preet/default-view.php');
-
-/*--- Page get param ---*/
-$getparams[] = 'p';
-
-/*--- Require active plugins ---*/
-if ( is_array(get_config('active_plugins')) ) {		
-	foreach (get_config('active_plugins') as $plugin) {
-			if ('' != $plugin && file_exists(PH_PATH . PLUGINS_PATH . '/' . $plugin))
-				include_once(PH_PATH . PLUGINS_PATH . '/' . $plugin);
-	  	} 
- }
+/* Load active plugins */
+$activePlugins = get_config('active_plugins');
+if (is_array($activePlugins)) {
+    foreach ($activePlugins as $plugin) {
+        $pluginPath = PH_PATH . PLUGINS_PATH . '/' . $plugin;
+        if (!empty($plugin) && file_exists($pluginPath)) {
+            include_once $pluginPath;
+        }
+    }
+}
