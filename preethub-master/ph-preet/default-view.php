@@ -227,8 +227,8 @@ input[type="submit"],
 	}
 
 	form input[type="text"],
-	form input[type="email"]
-	input[type="password"],
+	form input[type="email"],
+	form input[type="password"],
 	form select,
 	form textarea {
 		-webkit-appearance: none;
@@ -243,8 +243,8 @@ input[type="submit"],
 	}
 
 		form input[type="text"]:focus,
-		form input[type="email"]
-		input[type="password"]:focus,
+		form input[type="email"]:focus,
+		form input[type="password"]:focus,
 		form select:focus,
 		form textarea:focus {
 			background: #f0f0f0;
@@ -357,10 +357,10 @@ echo '<!DOCTYPE html>
 <body>
 <header class="header">
 <h1 class="brand-title">
-'. get_config("site_name") .'
+'. h(get_config("site_name")) .'
 </h1>
 <h2 class="brand-tagline">
-'. get_config("site_description") .'
+'. h(get_config("site_description")) .'
 </h2>
 </header>';
 }
@@ -372,16 +372,16 @@ echo '<section id="sidebar">
      <h3>Links</h3>'; 
    if(is_logged()){  
 echo '<li>          
- <a href="'. get_config("site_url") .'/ph-action.php?action=logout">Logout</a></li>';
+ <a href="'. h(site_url()) .'/ph-action.php?action=logout">Logout</a></li>';
 if(loggeduser()->role === "Admin"){   	
-echo '<li><a href="'. get_config("site_url") .'/ph-admin">Admin Panel</a></li>';
+echo '<li><a href="'. h(site_url()) .'/ph-admin">Admin Panel</a></li>';
  }    
   }else{ 
 echo '<li>          
- <a href="'. get_config("site_url") .'/ph-action.php?action=login">Login</a>
+ <a href="'. h(site_url()) .'/ph-action.php?action=login">Login</a>
  </li>
   <li>          
- <a href="'. get_config("site_url") .'/ph-action.php?action=signup">Signup</a>
+ <a href="'. h(site_url()) .'/ph-action.php?action=signup">Signup</a>
  </li>'; 
    } run_hook('sidebar'); 
 echo  '</ul>
@@ -392,7 +392,7 @@ echo  '</ul>
 function default_footer_view(){	 
 echo '<footer id="footer">
        Copyright &copy; 
-   '. get_config("site_name") .'  
+   '. h(get_config("site_name")) .'  
       </footer>
   </body>
 </html>';
@@ -410,7 +410,7 @@ echo '<section id="content">
     <label for="fname">User Name</label>
     <input type="text" id="fname" name="username" placeholder="Your name..">
     <label for="lname">Password</label>
-    <input type="text" id="lname" name="password" placeholder="Your last name..">
+    <input type="password" id="lname" name="password" placeholder="Your last name..">
     <input type="submit" value="Login" name="login">
   </form>
 </div>
@@ -432,7 +432,7 @@ echo '<section id="content">
 <label for="phemail">Email</label>
     <input type="text" id="phemail" name="email" placeholder="Your email..">
     <label for="phpass">Password</label>
-    <input type="text" id="phpass" name="password" placeholder="Your password.."> 
+    <input type="password" id="phpass" name="password" placeholder="Your password.."> 
     <input type="submit" value="signup" name="signup">
   </form> 
 </section>';
@@ -442,20 +442,12 @@ default_footer_view();
 
 //FUNCTION DEFAULT PAGE VIEW
 function default_page_view(){
-	//Default header
-default_header_view(); 
-echo '<section id="content">  
-      <div class="post"> 
-       <h2 class="post-title"> 
- '. get_page()->page_name .'
- </h2>   
- <div class="post-description">                       
-'. get_page()->content .'
-         </div>
-         </div>
-  </section>';
- //Default sidebar
-default_sidebar_view(); 
-//Default footer
-default_footer_view();
+    $page=get_page();
+    if(!$page){ http_response_code(404); echo '<p>Page not found.</p>'; return; }
+    default_header_view();
+    echo '<section id="content"><div class="post"><h2 class="post-title">'
+        . h($page->page_name) . '</h2><div class="post-description">'
+        . $page->content . '</div></div></section>';
+    default_sidebar_view();
+    default_footer_view();
 }
